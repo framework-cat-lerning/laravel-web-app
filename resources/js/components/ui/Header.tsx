@@ -7,7 +7,12 @@ import ColorModeIconDropdown from '../../themes/shared/ColorModeIconDropdown';
 
 import Search from './Search';
 
-export default function Header() {
+interface HeaderProps {
+  title: string;
+  isSearch?: boolean;
+}
+
+export default function Header({ title, isSearch = false }: HeaderProps) {
   return (
     <Stack
       direction="row"
@@ -21,14 +26,20 @@ export default function Header() {
       }}
       spacing={2}
     >
-      <NavbarBreadcrumbs />
+      <NavbarBreadcrumbs title={title} />
       <Stack direction="row" sx={{ gap: 1 }}>
-        <Search />
-        <CustomDatePicker />
-        <MenuButton showBadge aria-label="Open notifications">
-          <NotificationsRoundedIcon />
-        </MenuButton>
-        <ColorModeIconDropdown />
+        {isSearch ? (
+          <>
+            <Search />
+            <CustomDatePicker />
+            <MenuButton showBadge aria-label="Open notifications">
+              <NotificationsRoundedIcon />
+            </MenuButton>
+            <ColorModeIconDropdown />
+          </>
+        ) : (
+          <></>
+        )}
       </Stack>
     </Stack>
   );

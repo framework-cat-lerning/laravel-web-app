@@ -21,7 +21,9 @@ class ProductController extends Controller
     {
         $this->authorize('viewAny', Product::class);
         // 権限別のダッシュボードを表示
-        return Inertia::render('products/index');
+        return Inertia::render('products/index',[
+            'products' => [],
+        ]);
     }
 
     /**
