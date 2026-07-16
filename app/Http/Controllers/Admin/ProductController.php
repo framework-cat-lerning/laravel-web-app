@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\ProductResource;
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -20,9 +20,17 @@ class ProductController extends Controller
     public function index(Request $request): Response
     {
         $this->authorize('viewAny', Product::class);
+        /** @var string */
+        $sort = $request->input('sort', 'name');
+        /** @var 'asc'|'desc' */
+        $direction = $request->input('direction', 'asc');
+
+        // 取得
+        $producst = Product::query()->orderBy($sort, $direction)->get();
+
         // 権限別のダッシュボードを表示
-        return Inertia::render('products/index',[
-            'products' => [],
+        return Inertia::render('products/index', [
+            'products' => ProductResource::collection($producst)->resource,
         ]);
     }
 

@@ -13,6 +13,7 @@ interface ProductListProps {
 }
 
 export default function ProductList({ products }: ProductListProps) {
+  console.log(products);
   return (
     <TableContainer component={Paper}>
       <Table>

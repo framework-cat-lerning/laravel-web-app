@@ -19,7 +19,6 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $name
  * @property string $description
- * @property Carbon|null $email_verified_at
  * @property int $price
  * @property ProductStatus $status
  * @property Carbon|null $created_at
