@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -11,37 +10,38 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { useAuth } from '../../contexts/AuthContext';
-
+import { dashboard } from '@/routes';
+import { index as productsIndex } from '@/routes/products';
+import { index as usersIndex } from '@/routes/users';
 
 const systemAdminListItems = [
-  { text: 'ダッシュボード', icon: <HomeRoundedIcon /> },
-  { text: '商品管理', icon: <InventoryIcon /> },
-  { text: 'ユーザ管理', icon: <PeopleAltIcon /> },
-  { text: '追加申請', icon: <FileUploadIcon /> },
+  { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
+  { text: '商品管理', icon: <InventoryIcon />, href: productsIndex.url() },
+  { text: 'ユーザ管理', icon: <PeopleAltIcon />, href: usersIndex.url() },
 ];
 
-const importerListItems = [
-  { text: 'ダッシュボード', icon: <HomeRoundedIcon /> },
-  { text: '在庫管理', icon: <InventoryIcon /> },
-  { text: '追加申請', icon: <FileUploadIcon /> },
+const staffListItems = [
+  { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
+  { text: '在庫管理', icon: <InventoryIcon />, href: dashboard.url() },
+  { text: '追加申請', icon: <FileUploadIcon />, href: productsIndex.url() },
 ];
 
-const userListItems = [
-  { text: 'ダッシュボード', icon: <HomeRoundedIcon /> },
-  { text: '商品放出', icon: <FileDownloadIcon /> },
+const shopListItems = [
+  { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
+  { text: '商品販売', icon: <FileDownloadIcon />, href: dashboard.url() },
 
 ];
 
 export default function MenuContent() {
   const { auth } = useAuth();
-  let mainListItems: { text: string; icon: React.ReactNode }[] = [];
+  let mainListItems: { text: string; icon: React.ReactNode; href: string }[] = [];
 
   if (auth.user.role === 1) {
     mainListItems = systemAdminListItems;
   } else if (auth.user.role === 2) {
-    mainListItems = importerListItems;
+    mainListItems = staffListItems;
   } else if (auth.user.role === 3) {
-    mainListItems = userListItems;
+    mainListItems = shopListItems;
   }
 
   return (
@@ -49,7 +49,7 @@ export default function MenuContent() {
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0}>
+            <ListItemButton selected={index === 0} href={item.href}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>
