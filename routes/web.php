@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::inertia('/', 'welcome')->name('home');
+    Route::get('/', DashboardController::class)->name('dashborad');
     Route::post('logout', LogoutController::class)->name('logout');
 });

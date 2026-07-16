@@ -18,11 +18,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedTinyInteger("role")->nullable(false)->default(UserRole::SYSTEM_ADMIN->value);
+            $table->unsignedTinyInteger('role')->nullable(false)->default(UserRole::SYSTEM_ADMIN->value);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-            $table->comment("ユーザ");
+            $table->comment('ユーザ');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

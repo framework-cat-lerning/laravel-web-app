@@ -16,7 +16,7 @@ export default function Login() {
                         </div>
 
                         <Form
-                            {...loggedIn.form()}
+                            {...loggedIn.post()}
                             resetOnSuccess={['password']}
                             className="flex flex-col gap-4"
                         >
