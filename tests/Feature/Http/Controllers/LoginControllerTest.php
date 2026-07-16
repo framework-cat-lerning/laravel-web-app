@@ -11,7 +11,7 @@ test('認証済みユーザはログイン画面からリダイレクトされ�
 
     $this->actingAs($user)
         ->get(route('login'))
-        ->assertRedirect(route('home'));
+        ->assertRedirect(route('dashboard'));
 });
 
 test('正しい認証情報でログインできる', function () {
@@ -23,7 +23,7 @@ test('正しい認証情報でログインできる', function () {
     ]);
 
     $this->assertAuthenticatedAs($user);
-    $response->assertRedirect(route('home'));
+    $response->assertRedirect(route('dashboard'));
 });
 
 test('誤ったパスワードではログインできない', function () {
