@@ -10,6 +10,8 @@ import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from './MenuButton';
+import { logout } from '@/routes'
+import { router } from "@inertiajs/react"
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -60,7 +62,9 @@ export default function OptionsMenu() {
         <MenuItem onClick={handleClose}>Settings</MenuItem>
         <Divider />
         <MenuItem
-          onClick={handleClose}
+          onClick={() => {
+            router.post(logout.url())
+          }}
           sx={{
             [`& .${listItemIconClasses.root}`]: {
               ml: 'auto',
