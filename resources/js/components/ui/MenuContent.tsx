@@ -11,19 +11,20 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { useAuth } from '../../contexts/AuthContext';
 import { dashboard } from '@/routes';
-import { index as productsIndex } from '@/routes/products';
-import { index as usersIndex } from '@/routes/users';
+import { index as adminProductsIndex } from '@/routes/admin/products';
+import { index as adminUsersIndex } from '@/routes/admin/users';
+import { index as staffProductsIndex } from '@/routes/staff/products';
 
 const systemAdminListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
-  { text: '商品管理', icon: <InventoryIcon />, href: productsIndex.url() },
-  { text: 'ユーザ管理', icon: <PeopleAltIcon />, href: usersIndex.url() },
+  { text: '商品管理', icon: <InventoryIcon />, href: adminProductsIndex.url() },
+  { text: 'ユーザ管理', icon: <PeopleAltIcon />, href: adminUsersIndex.url() },
 ];
 
 const staffListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
   { text: '在庫管理', icon: <InventoryIcon />, href: dashboard.url() },
-  { text: '追加申請', icon: <FileUploadIcon />, href: productsIndex.url() },
+  { text: '追加申請', icon: <FileUploadIcon />, href: staffProductsIndex.url() },
 ];
 
 const shopListItems = [

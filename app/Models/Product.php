@@ -23,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property ProductStatus $status
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property int $request_user_id
  */
 #[Fillable(['name', 'description', 'price', 'status'])]
 #[Hidden(['status'])]
