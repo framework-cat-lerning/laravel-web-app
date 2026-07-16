@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -5,43 +6,50 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
-import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
-import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
-import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { useAuth } from '../../contexts/AuthContext';
 
-const mainListItems = [
-  { text: 'Home', icon: <HomeRoundedIcon /> },
-  { text: 'Analytics', icon: <AnalyticsRoundedIcon /> },
-  { text: 'Clients', icon: <PeopleRoundedIcon /> },
-  { text: 'Tasks', icon: <AssignmentRoundedIcon /> },
+
+const systemAdminListItems = [
+  { text: 'ダッシュボード', icon: <HomeRoundedIcon /> },
+  { text: '商品管理', icon: <InventoryIcon /> },
+  { text: 'ユーザ管理', icon: <PeopleAltIcon /> },
+  { text: '追加申請', icon: <FileUploadIcon /> },
 ];
 
-const secondaryListItems = [
-  { text: 'Settings', icon: <SettingsRoundedIcon /> },
-  { text: 'About', icon: <InfoRoundedIcon /> },
-  { text: 'Feedback', icon: <HelpRoundedIcon /> },
+const importerListItems = [
+  { text: 'ダッシュボード', icon: <HomeRoundedIcon /> },
+  { text: '在庫管理', icon: <InventoryIcon /> },
+  { text: '追加申請', icon: <FileUploadIcon /> },
+];
+
+const userListItems = [
+  { text: 'ダッシュボード', icon: <HomeRoundedIcon /> },
+  { text: '商品放出', icon: <FileDownloadIcon /> },
+
 ];
 
 export default function MenuContent() {
+  const { auth } = useAuth();
+  let mainListItems: { text: string; icon: React.ReactNode }[] = [];
+
+  if (auth.user.role === 1) {
+    mainListItems = systemAdminListItems;
+  } else if (auth.user.role === 2) {
+    mainListItems = importerListItems;
+  } else if (auth.user.role === 3) {
+    mainListItems = userListItems;
+  }
+
   return (
-    <Stack sx={{ flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
+    <Stack sx={{ mt: 2, flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
         {mainListItems.map((item, index) => (
           <ListItem key={index} disablePadding sx={{ display: 'block' }}>
             <ListItemButton selected={index === 0}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

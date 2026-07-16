@@ -7,17 +7,17 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
-import AppNavbar from '../../components/ui/AppNavbar';
-import Header from '../../components/ui/Header';
-import MainGrid from '../../components/ui/MainGrid';
-import SideMenu from '../../components/ui/SideMenu';
+import AppNavbar from '../components/ui/AppNavbar';
+import Header from '../components/ui/Header';
+import MainGrid from '../components/ui/MainGrid';
+import SideMenu from '../components/ui/SideMenu';
 import {
   chartsCustomizations,
   dataGridCustomizations,
   datePickersCustomizations,
   treeViewCustomizations,
-} from '../../themes/customizations';
-import AppTheme from '../../themes/shared/AppTheme';
+} from '../themes/customizations';
+import AppTheme from '../themes/shared/AppTheme';
 
 const xThemeComponents = {
   ...chartsCustomizations,
