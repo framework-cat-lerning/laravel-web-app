@@ -19,4 +19,20 @@ enum UserRole: int
             self::SHOP => '店舗側ユーザー',
         };
     }
+
+    /**
+     * 商品申請可能か
+     */
+    public function isApproval(): bool
+    {
+        return $this === self::STAFF;
+    }
+
+    /**
+     * 編集・削除可能か
+     */
+    public function isEditing(): bool
+    {
+        return $this === self::ADMIN;
+    }
 }

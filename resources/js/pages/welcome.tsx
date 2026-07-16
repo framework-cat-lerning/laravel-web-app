@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 
-export default function Welcome() {
+function Welcome() {
     return (
         <>
             <Head title="Welcome" />
@@ -355,3 +355,8 @@ export default function Welcome() {
         </>
     );
 }
+
+// ゲストページは共通レイアウト（MainLayout）を適用しない
+Welcome.layout = null;
+
+export default Welcome;

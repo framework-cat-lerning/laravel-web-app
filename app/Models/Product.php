@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Enums\ProductStatus;
+use App\Policies\ProductPolicy;
 use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -26,6 +28,7 @@ use Illuminate\Support\Carbon;
 #[Fillable(['name', 'description', 'price', 'status'])]
 #[Hidden(['status'])]
 #[UseFactory(ProductFactory::class)]
+#[UsePolicy(ProductPolicy::class)]
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */

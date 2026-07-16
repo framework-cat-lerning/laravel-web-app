@@ -1,7 +1,7 @@
 import { Form, Head } from '@inertiajs/react';
 import { loggedIn } from '@/routes';
 
-export default function Login() {
+function Login() {
     return (
         <>
             <Head title="ログイン" />
@@ -92,3 +92,8 @@ export default function Login() {
         </>
     );
 }
+
+// ゲストページは共通レイアウト（MainLayout）を適用しない
+Login.layout = null;
+
+export default Login;
