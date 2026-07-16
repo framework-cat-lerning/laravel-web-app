@@ -10,15 +10,15 @@ return new class extends Migration
         [
             'email' => 'admin@fw-cat.jp',
             'password' => 'password',
-            'role' => UserRole::SYSTEM_ADMIN,
+            'role' => UserRole::ADMIN,
         ], [
             'email' => 'importer@fw-cat.jp',
             'password' => 'password',
-            'role' => UserRole::IMPORTER,
+            'role' => UserRole::STAFF,
         ], [
             'email' => 'shop@fw-cat.jp',
             'password' => 'password',
-            'role' => UserRole::SHOP_USER,
+            'role' => UserRole::SHOP,
         ],
     ];
 
@@ -44,9 +44,12 @@ return new class extends Migration
     public function down(): void
     {
         foreach (self::USERS as $user) {
-            User::where([
+            $user = User::where([
                 'email' => $user['email'],
-            ])->first()->delete();
+            ])->first();
+            if ($user) {
+                $user->delete();
+            }
         }
     }
 };
