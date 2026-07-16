@@ -1,16 +1,16 @@
+import { checkboxClasses } from '@mui/material/Checkbox';
+import { iconButtonClasses } from '@mui/material/IconButton';
+import { listClasses } from '@mui/material/List';
+import { listItemIconClasses } from '@mui/material/ListItemIcon';
+import { menuItemClasses } from '@mui/material/MenuItem';
 import { paperClasses } from '@mui/material/Paper';
 import { alpha } from '@mui/material/styles';
 
-import { menuItemClasses } from '@mui/material/MenuItem';
-import { listItemIconClasses } from '@mui/material/ListItemIcon';
-import { iconButtonClasses } from '@mui/material/IconButton';
-import { checkboxClasses } from '@mui/material/Checkbox';
-import { listClasses } from '@mui/material/List';
-import { gridClasses } from '@mui/x-data-grid';
 import { tablePaginationClasses } from '@mui/material/TablePagination';
+import { gridClasses } from '@mui/x-data-grid';
 import { gray } from '../shared/themePrimitives';
 
-/* eslint-disable import/prefer-default-export */
+ 
 export const dataGridCustomizations = {
   MuiDataGrid: {
     styleOverrides: {

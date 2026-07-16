@@ -1,7 +1,7 @@
 import Avatar from '@mui/material/Avatar';
 import Chip from '@mui/material/Chip';
-import { GridCellParams, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
+import type { GridCellParams, GridRowsProp, GridColDef } from '@mui/x-data-grid';
 
 type SparkLineData = number[];
 
@@ -13,10 +13,12 @@ function getDaysInMonth(month: number, year: number) {
   const daysInMonth = date.getDate();
   const days = [];
   let i = 1;
+
   while (days.length < daysInMonth) {
     days.push(`${monthName} ${i}`);
     i += 1;
   }
+
   return days;
 }
 

@@ -1,8 +1,9 @@
-import { createRoot } from "react-dom/client";
-import { createInertiaApp, type ResolvedComponent } from "@inertiajs/react";
-import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { createInertiaApp  } from "@inertiajs/react";
+import type {ResolvedComponent} from "@inertiajs/react";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { createRoot } from "react-dom/client";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
