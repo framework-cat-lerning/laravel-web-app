@@ -18,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', LogoutController::class)->name('logout');
 
     // 管理者メニュー
-    Route::prefix("admin")->name("admin.")->group(function() {
+    Route::prefix('admin')->name('admin.')->group(function () {
         // 商品管理
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
         Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -38,9 +38,13 @@ Route::middleware('auth')->group(function () {
     });
 
     // スタッフメニュー
-    Route::prefix("staff")->name("staff.")->group(function() {
+    Route::prefix('staff')->name('staff.')->group(function () {
         // 商品管理
         Route::get('/products', [ProductRequestController::class, 'index'])->name('products.index');
+        Route::get('/products/new', [ProductRequestController::class, 'new'])->name('products.new');
+        Route::post('/products/new', [ProductRequestController::class, 'store'])->name('products.store');
+        Route::get('/products/edit', [ProductRequestController::class, 'edit'])->name('products.edit');
+        Route::post('/products/edit', [ProductRequestController::class, 'update'])->name('products.update');
 
         // ユーザ管理
         Route::get('/users', [UserController::class, 'index'])->name('users.index');

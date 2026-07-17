@@ -1,11 +1,11 @@
 import { Head } from '@inertiajs/react';
-import Header from '@/components/ui/Header';
 import Box from '@mui/material/Box';
+import Header from '@/components/ui/Header';
 import ProductList from '@/feature/products/ProductList';
-import { Product } from '@/types';
+import type { Product, ProductResource } from '@/types';
 
 interface ProductsIndexProps {
-  products: Product[];
+  products: ProductResource;
 }
 
 export default function ProductsIndex({ products }: ProductsIndexProps) {
@@ -18,7 +18,7 @@ export default function ProductsIndex({ products }: ProductsIndexProps) {
           py: 2,
         }}
       >
-        <ProductList products={products} />
+        <ProductList products={products.data} />
       </Box>
     </>
   );

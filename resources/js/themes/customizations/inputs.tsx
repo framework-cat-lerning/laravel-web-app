@@ -417,13 +417,23 @@ export const inputsCustomizations: Components<Theme> = {
               height: '2.5rem',
             },
           },
+          // multiline の場合は高さ固定を解除し、内容に応じて伸びるようにする
+          {
+            props: {
+              multiline: true,
+            },
+            style: {
+              height: 'auto',
+              alignItems: 'flex-start',
+            },
+          },
         ],
       }),
       notchedOutline: {
         border: 'none',
       },
     },
-  },
+  },  
   MuiInputAdornment: {
     styleOverrides: {
       root: ({ theme }) => ({

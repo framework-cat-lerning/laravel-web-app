@@ -4,6 +4,7 @@ import type {} from '@mui/x-data-grid/themeAugmentation';
 import type {} from '@mui/x-tree-view/themeAugmentation';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import { alpha } from '@mui/material/styles';
 import AppNavbar from '@/components/ui/AppNavbar';
 import SideMenu from '@/components/ui/SideMenu';
 import {
@@ -13,7 +14,6 @@ import {
   treeViewCustomizations,
 } from '@/themes/customizations';
 import AppTheme from '@/themes/shared/AppTheme';
-import { alpha } from '@mui/material/styles';
 
 const xThemeComponents = {
   ...chartsCustomizations,

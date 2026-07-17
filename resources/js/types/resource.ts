@@ -6,3 +6,7 @@ export type Product = {
   created_at: string|null;
   updated_at: string|null;
 }
+
+export type ProductResource = {
+  data: Product[];
+};
