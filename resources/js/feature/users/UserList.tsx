@@ -9,8 +9,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useAuth } from '@/contexts/AuthContext';
+import { newMethod as userCreate } from '@/routes/admin/users';
 import type { User } from '@/types/resource';
-import users, { newMethod as userCreate } from '@/routes/admin/users';
 
 interface UserListProps {
   users: User[];

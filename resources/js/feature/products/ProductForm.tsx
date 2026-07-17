@@ -7,9 +7,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { Controller, useForm, type UseFormSetError } from 'react-hook-form';
+import { Controller, useForm  } from 'react-hook-form';
+import type {UseFormSetError} from 'react-hook-form';
 import { index as productList, store as productStore, update as productUpdate } from '@/routes/staff/products';
-import { productFormScheme, type ProductFormInput, type ProductFormOutput } from '@/schemes/product';
+import { productFormScheme   } from '@/schemes/product';
+import type {ProductFormInput, ProductFormOutput} from '@/schemes/product';
 
 interface ProductFormProps {
   form_type: 'new' | 'edit';

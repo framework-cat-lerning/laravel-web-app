@@ -50,8 +50,8 @@ class UserController extends Controller
         return Inertia::render('users/form', [
             'user' => new User,
             'form_type' => 'new',
-            "options" => [
-                "roles" => UserRole::All()
+            'options' => [
+                'roles' => UserRole::All(),
             ],
         ]);
     }

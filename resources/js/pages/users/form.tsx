@@ -1,10 +1,9 @@
-import Header from "@/components/ui/Header";
 import { Head } from "@inertiajs/react";
 import Box from "@mui/material/Box";
-import type { User } from "@/types/resource";
+import Header from "@/components/ui/Header";
 import UserFormComponent from "@/feature/users/UserForm";
-import type { UserRole } from "@/types/cases";
 import type { UserFormInput } from "@/schemes/user";
+import type { UserRole } from "@/types/cases";
 
 interface UserFormProps {
     form_type: 'new' | 'edit';
@@ -15,7 +14,6 @@ interface UserFormProps {
 }
 
 export default function UserForm({ form_type, user, options }: UserFormProps) {
-    console.log(options);
     return (
         <>
             <Head title={form_type === 'new' ? 'ユーザ追加' : 'ユーザ編集'} />

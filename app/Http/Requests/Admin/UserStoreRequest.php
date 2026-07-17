@@ -28,7 +28,7 @@ class UserStoreRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', 'confirmed'],
             'role' => ['required', new Enum(UserRole::class)],
         ];
     }

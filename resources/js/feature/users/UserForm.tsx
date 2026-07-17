@@ -3,17 +3,18 @@ import { router, usePage } from '@inertiajs/react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { Controller, useForm, type UseFormSetError } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import type { UseFormSetError } from 'react-hook-form';
 import { index as userList, store as userStore, update as userUpdate } from '@/routes/admin/users';
-import type { UserRole } from '@/types/cases';
-import { userFormScheme, type UserFormOutput } from '@/schemes/user';
+import { userCreateFormScheme, userEditFormScheme } from '@/schemes/user';
+import type { UserFormOutput } from '@/schemes/user';
 import type { UserFormInput } from '@/schemes/user';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import type { UserRole } from '@/types/cases';
 
 interface UserFormProps {
   form_type: 'new' | 'edit';
@@ -23,7 +24,7 @@ interface UserFormProps {
   };
 }
 
-const FIELD_NAMES = ['name', 'email', 'password', 'role'] as const;
+const FIELD_NAMES = ['name', 'email', 'password', 'password_confirmation', 'role'] as const;
 
 function applyServerErrors(
   serverErrors: Record<string, string>,
@@ -46,6 +47,7 @@ function applyServerErrors(
 }
 
 export default function UserForm({ form_type, user, options }: UserFormProps) {
+  const formScheme = form_type === 'new' ? userCreateFormScheme : userEditFormScheme;
   const { errors: pageErrors } = usePage().props;
   const {
     control,
@@ -53,11 +55,12 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<UserFormInput, unknown, UserFormOutput>({
-    resolver: zodResolver(userFormScheme),
+    resolver: zodResolver(formScheme),
     defaultValues: {
       name: user?.name ?? '',
       email: user?.email ?? '',
       password: user?.password ?? '',
+      password_confirmation: '',
       role: user?.role ?? 0,
     },
   });
@@ -175,6 +178,7 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
           </Box>
         </Box>
 
+        {/* パスワード */}
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
             パスワード
@@ -191,12 +195,40 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
                   fullWidth
                   label="パスワード"
                   error={Boolean(errors.password)}
-                  helperText={errors.password?.message}
+                  helperText={
+                    errors.password?.message ??
+                    (form_type === 'edit' ? '変更する場合のみ入力してください' : undefined)
+                  }
                 />
               )}
             />
           </Box>
         </Box>
+
+        {/* パスワード確認 */}
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
+          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
+            パスワード（確認）
+          </Text>
+          <Box sx={{ flex: 10 }}>
+            <Controller
+              control={control}
+              name="password_confirmation"
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  value={field.value ?? ''}
+                  type="password"
+                  fullWidth
+                  label="パスワード（確認）"
+                  error={Boolean(errors.password_confirmation)}
+                  helperText={errors.password_confirmation?.message}
+                />
+              )}
+            />
+          </Box>
+        </Box>
+
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
             権限
