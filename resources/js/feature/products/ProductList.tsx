@@ -17,7 +17,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { approval } from '@/routes/admin/products';
+import { approval, show } from '@/routes/admin/products';
 import { newMethod as productCreate } from '@/routes/staff/products';
 import { cancel } from '@/routes/staff/products';
 import type { Product } from '@/types';
@@ -71,6 +71,16 @@ export default function ProductList({ products }: ProductListProps) {
     setCancelTarget(null);
   };
 
+  const onShowClick = (product: Product) => {
+    if (!user || user.role !== 1) {
+      alert('権限がありません');
+
+      return;
+    }
+
+    router.visit(show.url({ product: product.id }));
+  };
+
   return (
     <>
       {user.role === 2 && (
@@ -104,7 +114,7 @@ export default function ProductList({ products }: ProductListProps) {
               </tr>
             )}
             {products.map((product) => (
-              <TableRow key={product.id}>
+              <TableRow key={product.id} onClick={() => onShowClick(product)}>
                 <TableCell>{product.id}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}</TableCell>

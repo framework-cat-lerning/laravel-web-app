@@ -32,18 +32,26 @@ class ProductController extends Controller
         $direction = $request->input('direction', 'asc');
 
         // 取得
-        $producst = Product::query()->orderBy($sort, $direction)->get();
+        $products = Product::query()->orderBy($sort, $direction)->get();
 
         // 権限別のダッシュボードを表示
         return Inertia::render('products/index', [
-            'products' => ProductResource::collection($producst),
+            'products' => ProductResource::collection($products),
         ]);
     }
 
     /**
      * 商品詳細
      */
-    public function show() {}
+    public function show(Product $product): Response
+    {
+        $this->authorize('view', $product);
+
+        // 権限別のダッシュボードを表示
+        return Inertia::render('products/show', [
+            'product' => ProductResource::make($product),
+        ]);
+    }
 
     /**
      * 商品編集画面

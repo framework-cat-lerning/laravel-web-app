@@ -61,6 +61,7 @@ class Product extends Model
     // スコープ
     /**
      * 承認すみか
+     *
      * @return Builder<Product>
      */
     public function scopeIsApproval()
