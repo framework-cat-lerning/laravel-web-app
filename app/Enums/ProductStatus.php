@@ -17,4 +17,12 @@ enum ProductStatus: int
             self::APPROVED => '承認済み',
         };
     }
+
+    /**
+     * 申請中か
+     */
+    public function isPending(): bool
+    {
+        return $this === self::PENDING;
+    }
 }

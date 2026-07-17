@@ -13,6 +13,7 @@ import { newMethod as productCreate } from '@/routes/staff/products';
 import type { Product } from '@/types';
 import { useState } from 'react';
 import { approval } from '@/routes/admin/products';
+import { cancel } from '@/routes/staff/products';
 import { router } from '@inertiajs/react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -28,6 +29,7 @@ interface ProductListProps {
 export default function ProductList({ products }: ProductListProps) {
   const { auth: { user } } = useAuth();
   const [approvalTarget, setApprovalTarget] = useState<Product | null>(null);
+  const [cancelTarget, setCancelTarget] = useState<Product | null>(null);
 
   const handleApproveClick = (product: Product) => {
     setApprovalTarget(product);
@@ -46,6 +48,25 @@ export default function ProductList({ products }: ProductListProps) {
 
   const handleApproveClose = () => {
     setApprovalTarget(null);
+  };
+
+  const handleCancelClick = (product: Product) => {
+    setCancelTarget(product);
+  };
+
+  const handleCancelConfirm = () => {
+    if (!cancelTarget) {
+      return;
+    }
+    router.delete(cancel.url({ product: cancelTarget.id }), {
+      onSuccess: () => {
+        setCancelTarget(null);
+      },
+    });
+  };
+
+  const handleCancelClose = () => {
+    setCancelTarget(null);
   };
 
   return (
@@ -104,9 +125,16 @@ export default function ProductList({ products }: ProductListProps) {
                     </>
                   )}
                   {user.role === 2 && (
-                    <Button variant="contained" color="error" sx={{ marginRight: 1 }}>
-                      キャンセル
-                    </Button>
+                    <>
+                      {product.status.id === 1 && (
+                        <Button variant="contained" color="error" sx={{ marginRight: 1 }} onClick={() => handleCancelClick(product)}>
+                          キャンセル
+                        </Button>
+                      )}
+                      {product.status.id === 2 && (
+                        <Typography variant="body1">操作不可</Typography>
+                      )}
+                    </>
                   )}
                 </TableCell>
               </TableRow>
@@ -124,6 +152,17 @@ export default function ProductList({ products }: ProductListProps) {
         <DialogActions>
           <Button onClick={handleApproveClose}>キャンセル</Button>
           <Button onClick={handleApproveConfirm}>承認</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={!!cancelTarget} onClose={handleCancelClose} maxWidth="sm" fullWidth>
+        <DialogTitle>キャンセル確認ダイアログ</DialogTitle>
+        <DialogContent>
+          <DialogContentText>以下の商品の申請をキャンセルしますか？</DialogContentText>
+          <Typography variant="body1">{cancelTarget?.name}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelConfirm}>キャンセル</Button>
         </DialogActions>
       </Dialog>
     </>

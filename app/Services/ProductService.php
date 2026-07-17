@@ -37,6 +37,26 @@ class ProductService
     }
 
     /**
+     * 商品の承認申請キャンセル
+     */
+    public function cancel(Product $product): bool
+    {
+        try {
+            return DB::transaction(function () use ($product): bool {
+                if ($product->status->isPending()) {
+                    $product->delete();
+                }
+
+                return true;
+            });
+        } catch (Throwable $e) {
+            report($e);
+
+            throw $e;
+        }
+    }
+
+    /**
      * 商品の承認
      */
     public function approval(Product $product): bool

@@ -44,7 +44,7 @@ class ProductPolicy
      */
     public function delete(User $user, Product $product): bool
     {
-        return $user->role->isEditing();
+        return $user->role->isEditing() || $user->id === $product->request_user_id;
     }
 
     /**

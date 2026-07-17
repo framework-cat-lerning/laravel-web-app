@@ -56,6 +56,8 @@ class ProductRequestController extends Controller
      */
     public function store(ProductStoreRequest $request): RedirectResponse
     {
+        $this->authorize('create', Product::class);
+
         $this->productService->store($request);
 
         return redirect()->route('staff.products.index');
@@ -64,5 +66,12 @@ class ProductRequestController extends Controller
     /**
      * 商品申請キャンセル
      */
-    public function cancel() {}
+    public function cancel(Product $product): RedirectResponse
+    {
+        $this->authorize('delete', $product);
+
+        $this->productService->cancel($product);
+
+        return redirect()->route('staff.products.index');
+    }
 }
