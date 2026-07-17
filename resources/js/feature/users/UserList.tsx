@@ -1,4 +1,5 @@
-import { Link } from '@inertiajs/react';
+import { useState } from 'react';
+import { Link, router } from '@inertiajs/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
@@ -8,8 +9,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 import { useAuth } from '@/contexts/AuthContext';
-import { newMethod as userCreate } from '@/routes/admin/users';
+import { newMethod as userCreate, deleteMethod as userDelete } from '@/routes/admin/users';
 import type { User } from '@/types/resource';
 import { update as userEdit } from '@/routes/admin/users';
 
@@ -20,9 +26,29 @@ interface UserListProps {
 export default function UserList({ users }: UserListProps) {
   const { auth: { user } } = useAuth();
 
+  const [deleteTarget, setDeleteTarget] = useState<User | null>(null);
+
+  const handleDeleteClick = (target: User) => {
+    setDeleteTarget(target);
+  };
+
+  const handleCloseModal = () => {
+    setDeleteTarget(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!deleteTarget) return;
+
+    router.delete(userDelete.url({ user: deleteTarget.id }), {
+      onSuccess: () => {
+        setDeleteTarget(null);
+      },
+    });
+  };
+
   return (
     <>
-      {user.role ===1 && (
+      {user.role === 1 && (
         <Box sx={{ mb: 1, display: 'flex', justifyContent: 'flex-end', marginBottom: 2 }}>
           <Link href={userCreate.url()}>
             <Button variant="contained" color="primary">
@@ -52,22 +78,25 @@ export default function UserList({ users }: UserListProps) {
                 </td>
               </tr>
             )}
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>{user.role.label}</TableCell>
-                <TableCell>{user.created_at}</TableCell>
-                <TableCell>{user.updated_at}</TableCell>
+            {users.map((u) => (
+              <TableRow key={u.id}>
+                <TableCell>{u.id}</TableCell>
+                <TableCell>{u.name}</TableCell>
+                <TableCell>{u.email}</TableCell>
+                <TableCell>{u.role.label}</TableCell>
+                <TableCell>{u.created_at}</TableCell>
+                <TableCell>{u.updated_at}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained" color="warning" sx={{ marginRight: 1 }}
-                    href={userEdit.url({ user: user.id })}
+                    href={userEdit.url({ user: u.id })}
                   >
                     編集
                   </Button>
-                  <Button variant="contained" color="error" sx={{ marginRight: 1 }}>
+                  <Button
+                    variant="contained" color="error" sx={{ marginRight: 1 }}
+                    onClick={() => handleDeleteClick(u)}
+                  >
                     削除
                   </Button>
                 </TableCell>
@@ -76,6 +105,21 @@ export default function UserList({ users }: UserListProps) {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={!!deleteTarget} onClose={handleCloseModal}>
+        <DialogTitle>ユーザーの削除</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            「{deleteTarget?.name}」を削除します。この操作は取り消せません。よろしいですか？
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal}>キャンセル</Button>
+          <Button onClick={handleConfirmDelete} color="error" variant="contained">
+            削除する
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

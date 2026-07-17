@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\ProductStatus;
 use App\Enums\UserRole;
 use App\Http\Requests\Admin\UserStoreRequest;
 use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class UserService
@@ -50,6 +52,32 @@ class UserService
                 $user->save();
 
                 return $user;
+            });
+        } catch (Throwable $e) {
+            report($e);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * 削除処理
+     */
+    public function delete(User $user): bool
+    {
+        try {
+            return DB::transaction(function () use ($user): bool {
+                // ユーザに紐づく申請中のアイテムを削除
+                $products = $user->requestProducts()->where([
+                    'status' => ProductStatus::PENDING,
+                ]);
+                Log::debug('申請無効化アイテム：'.print_r($products->get(), true));
+                $products->delete();
+
+                // ユーザの削除
+                $user->delete();
+
+                return true;
             });
         } catch (Throwable $e) {
             report($e);

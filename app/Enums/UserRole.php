@@ -46,6 +46,7 @@ enum UserRole: int
 
     /**
      * 全ケースを取得
+     *
      * @return array{
      *          array{
      *              id: int, label: string

@@ -100,5 +100,12 @@ class UserController extends Controller
     /**
      * ユーザ削除
      */
-    public function delete() {}
+    public function delete(User $user): RedirectResponse
+    {
+        $this->authorize('delete', $user);
+
+        $this->userService->delete($user);
+
+        return redirect()->route('admin.users.index');
+    }
 }
