@@ -1,5 +1,6 @@
 import { router } from '@inertiajs/react';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
@@ -9,7 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { edit } from '@/routes/admin/users';
+import { edit, deleteMethod } from '@/routes/admin/users';
 import type { User } from "@/types/resource";
 
 interface UserDetailProps {
@@ -17,13 +18,29 @@ interface UserDetailProps {
 }
 
 export default function UserDetail({ user }: UserDetailProps) {
-  console.log(user);
-
   return (
     <Box sx={{ width: '100%', maxWidth: '900px' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h6">{user.name} の詳細</Typography>
-        <Button variant="contained" color="primary" startIcon={<EditIcon />} onClick={() => router.visit(edit.url({ user: user.id }))}>編集</Button>
+        <Box>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<EditIcon />}
+            onClick={() => router.visit(edit.url({ user: user.id }))}
+            sx={{ mr: 1 }}
+          >
+            編集
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={() => router.delete(deleteMethod.url({ user: user.id }))}
+          >
+            削除
+          </Button>
+        </Box>
       </Box>
 
       <TableContainer component={Paper} sx={{ mt: 2 }}>

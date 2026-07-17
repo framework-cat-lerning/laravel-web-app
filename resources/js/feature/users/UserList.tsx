@@ -39,8 +39,8 @@ export default function UserList({ users }: UserListProps) {
 
   const handleConfirmDelete = () => {
     if (!deleteTarget) {
-return;
-}
+      return;
+    }
 
     router.delete(userDelete.url({ user: deleteTarget.id }), {
       onSuccess: () => {
