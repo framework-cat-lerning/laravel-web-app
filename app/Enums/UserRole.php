@@ -46,8 +46,13 @@ enum UserRole: int
 
     /**
      * 全ケースを取得
+     * @return array{
+     *          array{
+     *              id: int, label: string
+     *          }
+     *         }
      */
-    public static function All()
+    public static function All(): array
     {
         return array_map(
             fn (self $case) => [

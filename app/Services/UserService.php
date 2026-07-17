@@ -38,13 +38,13 @@ class UserService
     {
         try {
             return DB::transaction(function () use ($request, $user): User {
-                $user->name = $request->string("name");
-                $user->email = $request->string("email");
-                $user->role = UserRole::from($request->integer("role"));
+                $user->name = $request->string('name');
+                $user->email = $request->string('email');
+                $user->role = UserRole::from($request->integer('role'));
 
                 /** @var string|null */
-                $password = $request->input("password");
-                if (!empty($password)) {
+                $password = $request->input('password');
+                if (! empty($password)) {
                     $user->password = $password;
                 }
                 $user->save();
@@ -57,4 +57,4 @@ class UserService
             throw $e;
         }
     }
-    }
+}

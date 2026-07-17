@@ -11,10 +11,8 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use RequestParseBodyException;
 
 class UserController extends Controller
 {
