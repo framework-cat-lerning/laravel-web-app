@@ -8,19 +8,26 @@ import TextField from '@mui/material/TextField';
 import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Controller, useForm, type UseFormSetError } from 'react-hook-form';
-import { index as productList, store as productStore, update as productUpdate } from '@/routes/staff/products';
-import { productFormScheme, type ProductFormInput, type ProductFormOutput } from '@/schemes/product';
+import { index as userList, store as userStore, update as userUpdate } from '@/routes/admin/users';
+import type { UserRole } from '@/types/cases';
+import { userFormScheme, type UserFormOutput } from '@/schemes/user';
+import type { UserFormInput } from '@/schemes/user';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
-interface ProductFormProps {
+interface UserFormProps {
   form_type: 'new' | 'edit';
-  product?: ProductFormOutput;
+  user: UserFormInput;
+  options: {
+    roles: UserRole[];
+  };
 }
 
-const FIELD_NAMES = ['name', 'description', 'price'] as const;
+const FIELD_NAMES = ['name', 'email', 'password', 'role'] as const;
 
 function applyServerErrors(
   serverErrors: Record<string, string>,
-  setError: UseFormSetError<ProductFormInput>,
+  setError: UseFormSetError<UserFormInput>,
   setSubmitError: (message: string) => void,
 ): void {
   let hasFieldError = false;
@@ -38,19 +45,20 @@ function applyServerErrors(
   }
 }
 
-export default function ProductForm({ form_type, product }: ProductFormProps) {
+export default function UserForm({ form_type, user, options }: UserFormProps) {
   const { errors: pageErrors } = usePage().props;
   const {
     control,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<ProductFormInput, unknown, ProductFormOutput>({
-    resolver: zodResolver(productFormScheme),
+  } = useForm<UserFormInput, unknown, UserFormOutput>({
+    resolver: zodResolver(userFormScheme),
     defaultValues: {
-      name: product?.name ?? '',
-      description: product?.description ?? '',
-      price: product?.price ?? '',
+      name: user?.name ?? '',
+      email: user?.email ?? '',
+      password: user?.password ?? '',
+      role: user?.role ?? 0,
     },
   });
 
@@ -75,7 +83,7 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
     applyServerErrors(serverErrors, setError, setSubmitError);
   }, [pageErrors, setError]);
 
-  const onSubmit = handleSubmit(async (data: ProductFormOutput) => {
+  const onSubmit = handleSubmit(async (data: UserFormOutput) => {
     setSubmitError(null);
 
     await new Promise<void>((resolve) => {
@@ -96,9 +104,9 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
       };
 
       if (form_type === 'new') {
-        router.post(productStore.url(), data, options);
+        router.post(userStore.url(), data, options);
       } else {
-        router.put(productUpdate.url({ product: product?.id ?? 0 }), data, options);
+        router.put(userUpdate.url({ user: user?.id ?? 0 }), data, options);
       }
     });
   });
@@ -119,8 +127,8 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
         )}
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-            商品名
+          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
+            ユーザ名
           </Text>
           <Box sx={{ flex: 10 }}>
             <Controller
@@ -131,7 +139,7 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
                   {...field}
                   value={field.value ?? ''}
                   fullWidth
-                  label="商品名"
+                  label="ユーザ名"
                   error={Boolean(errors.name)}
                   helperText={errors.name?.message}
                 />
@@ -141,23 +149,21 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-            商品説明
+          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
+            メールアドレス
           </Text>
           <Box sx={{ flex: 10 }}>
             <Controller
               control={control}
-              name="description"
+              name="email"
               render={({ field }) => (
                 <TextField
                   {...field}
                   value={field.value ?? ''}
                   fullWidth
-                  multiline
-                  minRows={4}
-                  label="商品説明"
-                  error={Boolean(errors.description)}
-                  helperText={errors.description?.message}
+                  label="メールアドレス"
+                  error={Boolean(errors.email)}
+                  helperText={errors.email?.message}
                   sx={{
                     '& .MuiInputBase-root': {
                       alignItems: 'flex-start',
@@ -170,34 +176,49 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-            商品価格
+          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
+            パスワード
           </Text>
           <Box sx={{ flex: 10 }}>
             <Controller
               control={control}
-              name="price"
+              name="password"
               render={({ field }) => (
                 <TextField
-                  name={field.name}
-                  onBlur={field.onBlur}
-                  inputRef={field.ref}
+                  {...field}
                   value={field.value ?? ''}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    field.onChange(value === '' ? '' : Number(value));
-                  }}
-                  type="number"
+                  type="password"
                   fullWidth
-                  label="商品価格"
-                  slotProps={{
-                    input: {
-                      startAdornment: <InputAdornment position="start">¥</InputAdornment>,
-                    },
-                  }}
-                  error={Boolean(errors.price)}
-                  helperText={errors.price?.message}
+                  label="パスワード"
+                  error={Boolean(errors.password)}
+                  helperText={errors.password?.message}
                 />
+              )}
+            />
+          </Box>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
+          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
+            権限
+          </Text>
+          <Box sx={{ flex: 10 }}>
+            <Controller
+              control={control}
+              name="role"
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  value={field.value ?? ''}
+                  fullWidth
+                  label="権限"
+                  error={Boolean(errors.role)}
+                >
+                  {options.roles.map((role) => (
+                    <MenuItem key={role.id} value={role.id}>
+                      {role.label}
+                    </MenuItem>
+                  ))}
+                </Select>
               )}
             />
           </Box>
@@ -211,7 +232,7 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
             variant="contained"
             color="secondary"
             type="button"
-            onClick={() => router.visit(productList.url())}
+            onClick={() => router.visit(userList.url())}
             disabled={isSubmitting}
           >
             キャンセル

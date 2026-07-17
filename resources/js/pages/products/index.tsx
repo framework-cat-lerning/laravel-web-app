@@ -2,7 +2,7 @@ import { Head } from '@inertiajs/react';
 import Box from '@mui/material/Box';
 import Header from '@/components/ui/Header';
 import ProductList from '@/feature/products/ProductList';
-import type { Product, ProductResource } from '@/types';
+import type { ProductResource } from '@/types';
 
 interface ProductsIndexProps {
   products: ProductResource;

@@ -35,4 +35,26 @@ enum UserRole: int
     {
         return $this === self::ADMIN;
     }
+
+    /**
+     * 管理者ユーザか
+     */
+    public function isAdmin(): bool
+    {
+        return $this === self::ADMIN;
+    }
+
+    /**
+     * 全ケースを取得
+     */
+    public static function All()
+    {
+        return array_map(
+            fn (self $case) => [
+                'id' => $case->value,
+                'label' => $case->label(),
+            ],
+            self::cases()
+        );
+    }
 }

@@ -1,8 +1,4 @@
-export type Role = {
-    id: number;
-    label: string;
-};
-export type User = {
+export type AuthUser = {
     id: number;
     name: string;
     email: string;
@@ -15,5 +11,5 @@ export type User = {
 };
 
 export type Auth = {
-    user: User;
+    user: AuthUser;
 };

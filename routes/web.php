@@ -32,9 +32,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/new', [UserController::class, 'new'])->name('users.new');
         Route::post('/users/new', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::get('/users/{product}/edit', [UserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{product}/edit', [UserController::class, 'update'])->name('users.update');
-        Route::delete('/users/{product}', [UserController::class, 'delete'])->name('users.delete');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}/edit', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'delete'])->name('users.delete');
     });
 
     // スタッフメニュー
@@ -43,16 +43,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/products', [ProductRequestController::class, 'index'])->name('products.index');
         Route::get('/products/new', [ProductRequestController::class, 'new'])->name('products.new');
         Route::post('/products/new', [ProductRequestController::class, 'store'])->name('products.store');
-        Route::get('/products/edit', [ProductRequestController::class, 'edit'])->name('products.edit');
-        Route::post('/products/edit', [ProductRequestController::class, 'update'])->name('products.update');
-
-        // ユーザ管理
-        Route::get('/users', [UserController::class, 'index'])->name('users.index');
-        Route::get('/users/new', [UserController::class, 'new'])->name('users.new');
-        Route::post('/users/new', [UserController::class, 'store'])->name('users.store');
-        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::get('/users/{product}/edit', [UserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{product}/edit', [UserController::class, 'update'])->name('users.update');
-        Route::delete('/users/{product}', [UserController::class, 'delete'])->name('users.delete');
+        Route::get('/products/{product}', [ProductRequestController::class, 'edit'])->name('products.show');
+        Route::get('/products/{product}/edit', [ProductRequestController::class, 'edit'])->name('products.edit');
+        Route::post('/products/{product}/edit', [ProductRequestController::class, 'update'])->name('products.update');
     });
 });

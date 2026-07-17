@@ -11,6 +11,9 @@ use Throwable;
 
 class ProductService
 {
+    /**
+     * 新規保存処理
+     */
     public function store(ProductStoreRequest $request): Product
     {
         try {
