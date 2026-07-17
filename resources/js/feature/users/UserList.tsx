@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow';
 import { useAuth } from '@/contexts/AuthContext';
 import { newMethod as userCreate } from '@/routes/admin/users';
 import type { User } from '@/types/resource';
+import { update as userEdit } from '@/routes/admin/users';
 
 interface UserListProps {
   users: User[];
@@ -60,7 +61,10 @@ export default function UserList({ users }: UserListProps) {
                 <TableCell>{user.created_at}</TableCell>
                 <TableCell>{user.updated_at}</TableCell>
                 <TableCell>
-                  <Button variant="contained" color="warning" sx={{ marginRight: 1 }}>
+                  <Button
+                    variant="contained" color="warning" sx={{ marginRight: 1 }}
+                    href={userEdit.url({ user: user.id })}
+                  >
                     編集
                   </Button>
                   <Button variant="contained" color="error" sx={{ marginRight: 1 }}>

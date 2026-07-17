@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserStoreRequest;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Http\Resources\Admin\UserResource;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use RequestParseBodyException;
 
 class UserController extends Controller
 {
@@ -73,18 +76,28 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
-        $this->authorize('update', User::class);
+        $this->authorize('update', $user);
 
         return Inertia::render('users/form', [
             'user' => $user,
-            'form_type' => 'new',
+            'form_type' => 'edit',
+            'options' => [
+                'roles' => UserRole::All(),
+            ],
         ]);
     }
 
     /**
      * ユーザ更新
      */
-    public function update() {}
+    public function update(UserUpdateRequest $request, User $user): RedirectResponse
+    {
+        $this->authorize('update', $user);
+
+        $this->userService->update($request, $user);
+
+        return redirect()->route('admin.users.index');
+    }
 
     /**
      * ユーザ削除
