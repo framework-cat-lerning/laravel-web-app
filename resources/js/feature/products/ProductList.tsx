@@ -1,6 +1,12 @@
 import { Link } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,19 +14,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { useAuth } from '@/contexts/AuthContext';
-import { newMethod as productCreate } from '@/routes/staff/products';
-import type { Product } from '@/types';
-import { useState } from 'react';
-import { approval } from '@/routes/admin/products';
-import { cancel } from '@/routes/staff/products';
-import { router } from '@inertiajs/react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { approval } from '@/routes/admin/products';
+import { newMethod as productCreate } from '@/routes/staff/products';
+import { cancel } from '@/routes/staff/products';
+import type { Product } from '@/types';
 
 interface ProductListProps {
   products: Product[];
@@ -39,6 +39,7 @@ export default function ProductList({ products }: ProductListProps) {
     if (!approvalTarget) {
       return;
     }
+
     router.patch(approval.url({ product: approvalTarget.id }), {}, {
       onSuccess: () => {
         setApprovalTarget(null);
@@ -58,6 +59,7 @@ export default function ProductList({ products }: ProductListProps) {
     if (!cancelTarget) {
       return;
     }
+
     router.delete(cancel.url({ product: cancelTarget.id }), {
       onSuccess: () => {
         setCancelTarget(null);

@@ -1,8 +1,8 @@
-import Header from "@/components/ui/Header";
 import { Head } from "@inertiajs/react";
 import Box from "@mui/material/Box";
-import type { ProductInventoryResource } from "@/types";
+import Header from "@/components/ui/Header";
 import InventoryList from "@/feature/inventries/InventoryList";
+import type { ProductInventoryResource } from "@/types";
 
 interface InventoryIndexProps {
   inventories: ProductInventoryResource;

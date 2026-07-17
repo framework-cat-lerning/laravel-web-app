@@ -1,25 +1,18 @@
-import type { ProductInventory } from "@/types";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import TableBody from "@mui/material/TableBody";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import { useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import TextField from "@mui/material/TextField";
-import DialogActions from "@mui/material/DialogActions";
 import { router } from "@inertiajs/react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import {  buy } from "@/routes/staff/inventries";
+import type { ProductInventory } from "@/types";
 
 interface InventoryListProps {
   inventries: ProductInventory[];
@@ -37,8 +30,10 @@ export default function InventoryList({ inventries }: InventoryListProps) {
   const handleBuy = (inventory: ProductInventory) => {
     if (count <= 0) {
       alert('数量を入力してください');
+
       return;
     }
+
     router.post(buy.url({ product: inventory.id }), { count: count }, {
       onSuccess: () => {
         setSelectedInventory(null);
