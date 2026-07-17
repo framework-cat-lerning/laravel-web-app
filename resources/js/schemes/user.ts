@@ -33,7 +33,10 @@ export const userEditFormScheme = z
   .refine(
     (data) => {
       // パスワードが未入力なら確認欄のチェックは不要
-      if (data.password === '') return true;
+      if (data.password === '') {
+return true;
+}
+
       return data.password === data.password_confirmation;
     },
     {

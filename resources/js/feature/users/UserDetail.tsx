@@ -1,0 +1,61 @@
+import { router } from '@inertiajs/react';
+import EditIcon from '@mui/icons-material/Edit';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import { edit } from '@/routes/admin/users';
+import type { User } from "@/types/resource";
+
+interface UserDetailProps {
+  user: User;
+}
+
+export default function UserDetail({ user }: UserDetailProps) {
+  console.log(user);
+
+  return (
+    <Box sx={{ width: '100%', maxWidth: '900px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h6">{user.name} の詳細</Typography>
+        <Button variant="contained" color="primary" startIcon={<EditIcon />} onClick={() => router.visit(edit.url({ user: user.id }))}>編集</Button>
+      </Box>
+
+      <TableContainer component={Paper} sx={{ mt: 2 }}>
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>ID</TableCell>
+              <TableCell>{user.id}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>名前</TableCell>
+              <TableCell>{user.name}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>メールアドレス</TableCell>
+              <TableCell>{user.email}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>権限</TableCell>
+              <TableCell>{user.role.label}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>作成日時</TableCell>
+              <TableCell>{user.created_at}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold' }}>更新日時</TableCell>
+              <TableCell>{user.updated_at}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
+  );
+}

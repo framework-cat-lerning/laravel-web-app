@@ -7,12 +7,17 @@ import ColorModeIconDropdown from '../../themes/shared/ColorModeIconDropdown';
 
 import Search from './Search';
 
+interface Parent {
+  title: string;
+  href: string;
+}
 interface HeaderProps {
   title: string;
   isSearch?: boolean;
+  parents?: Parent[];
 }
 
-export default function Header({ title, isSearch = false }: HeaderProps) {
+export default function Header({ title, isSearch = false, parents=[] }: HeaderProps) {
   return (
     <Stack
       direction="row"
@@ -26,7 +31,7 @@ export default function Header({ title, isSearch = false }: HeaderProps) {
       }}
       spacing={2}
     >
-      <NavbarBreadcrumbs title={title} />
+      <NavbarBreadcrumbs title={title} parents={parents} />
       <Stack direction="row" sx={{ gap: 1 }}>
         {isSearch ? (
           <>

@@ -39,7 +39,16 @@ class UserController extends Controller
     /**
      * ユーザ詳細
      */
-    public function show() {}
+    public function show(User $user): Response
+    {
+        $this->authorize('view', $user);
+
+        $users = User::all();
+
+        return Inertia::render('users/show', [
+            'user' => UserResource::make($user),
+        ]);
+    }
 
     /**
      * ユーザ登録画面

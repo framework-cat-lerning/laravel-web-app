@@ -1,7 +1,11 @@
-import { useState } from 'react';
 import { Link, router } from '@inertiajs/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,15 +13,12 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
+import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { newMethod as userCreate, deleteMethod as userDelete } from '@/routes/admin/users';
-import type { User } from '@/types/resource';
 import { update as userEdit } from '@/routes/admin/users';
+import { show } from '@/routes/admin/users';
+import type { User } from '@/types/resource';
 
 interface UserListProps {
   users: User[];
@@ -37,7 +38,9 @@ export default function UserList({ users }: UserListProps) {
   };
 
   const handleConfirmDelete = () => {
-    if (!deleteTarget) return;
+    if (!deleteTarget) {
+return;
+}
 
     router.delete(userDelete.url({ user: deleteTarget.id }), {
       onSuccess: () => {
@@ -79,7 +82,7 @@ export default function UserList({ users }: UserListProps) {
               </tr>
             )}
             {users.map((u) => (
-              <TableRow key={u.id}>
+              <TableRow key={u.id} onClick={() => router.visit(show.url({ user: u.id }))}>
                 <TableCell>{u.id}</TableCell>
                 <TableCell>{u.name}</TableCell>
                 <TableCell>{u.email}</TableCell>
