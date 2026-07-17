@@ -18,8 +18,7 @@ class ProductController extends Controller
 
     public function __construct(
         protected ProductService $productService
-    )
-    { }
+    ) {}
 
     /**
      * 商品一覧

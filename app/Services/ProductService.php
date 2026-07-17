@@ -39,7 +39,7 @@ class ProductService
     /**
      * 商品の承認
      */
-    public  function approval(Product $product): bool
+    public function approval(Product $product): bool
     {
         try {
             return DB::transaction(function () use ($product): bool {
