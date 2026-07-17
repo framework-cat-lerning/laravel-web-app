@@ -3,11 +3,17 @@ export type UserRole = {
   label: string;
 };
 
+export type ProductStatus = {
+  id: number;
+  label: string;
+};
+
 export type Product = {
   id: number;
   name: string;
   description: string|null;
   price: number;
+  status: ProductStatus;
   created_at: string|null;
   updated_at: string|null;
 }

@@ -23,9 +23,12 @@ class ProductResource extends JsonResource
             'name' => $this->resource->name,
             'description' => $this->resource->description,
             'price' => $this->resource->price,
-            'status' => $this->resource->status,
-            'created_at' => $this->resource->created_at,
-            'updated_at' => $this->resource->updated_at,
+            'status' => [
+                'id' => $this->resource->status,
+                'label' => $this->resource->status->label(),
+            ],
+            'created_at' => $this->resource->created_at?->isoFormat('YYYY/MM/DD'),
+            'updated_at' => $this->resource->updated_at?->isoFormat('YYYY/MM/DD'),
         ];
     }
 }

@@ -62,4 +62,12 @@ class ProductPolicy
     {
         return false;
     }
+
+    /**
+     * 商品の許可
+     */
+    public function approval(User $user, Product $product): bool
+    {
+        return $user->role->isAdmin();
+    }
 }

@@ -11,6 +11,15 @@ import TableRow from '@mui/material/TableRow';
 import { useAuth } from '@/contexts/AuthContext';
 import { newMethod as productCreate } from '@/routes/staff/products';
 import type { Product } from '@/types';
+import { useState } from 'react';
+import { approval } from '@/routes/admin/products';
+import { router } from '@inertiajs/react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Typography from '@mui/material/Typography';
 
 interface ProductListProps {
   products: Product[];
@@ -18,6 +27,26 @@ interface ProductListProps {
 
 export default function ProductList({ products }: ProductListProps) {
   const { auth: { user } } = useAuth();
+  const [approvalTarget, setApprovalTarget] = useState<Product | null>(null);
+
+  const handleApproveClick = (product: Product) => {
+    setApprovalTarget(product);
+  };
+
+  const handleApproveConfirm = () => {
+    if (!approvalTarget) {
+      return;
+    }
+    router.patch(approval.url({ product: approvalTarget.id }), {}, {
+      onSuccess: () => {
+        setApprovalTarget(null);
+      },
+    });
+  };
+
+  const handleApproveClose = () => {
+    setApprovalTarget(null);
+  };
 
   return (
     <>
@@ -37,6 +66,7 @@ export default function ProductList({ products }: ProductListProps) {
               <TableCell>ID</TableCell>
               <TableCell>商品名</TableCell>
               <TableCell>参考金額</TableCell>
+              <TableCell>ステータス</TableCell>
               <TableCell>作成日</TableCell>
               <TableCell>更新日</TableCell>
               <TableCell>操作</TableCell>
@@ -55,24 +85,47 @@ export default function ProductList({ products }: ProductListProps) {
                 <TableCell>{product.id}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}</TableCell>
+                <TableCell>{product.status.label}</TableCell>
                 <TableCell>{product.created_at}</TableCell>
                 <TableCell>{product.updated_at}</TableCell>
                 <TableCell>
-                  <Button variant="contained" color="primary" sx={{ marginRight: 1 }} onClick={() => { }}>
-                    承認
-                  </Button>
-                  <Button variant="contained" color="warning" sx={{ marginRight: 1 }}>
-                    編集
-                  </Button>
-                  <Button variant="contained" color="error" sx={{ marginRight: 1 }}>
-                    キャンセル
-                  </Button>
+                  {user.role === 1 && (
+                    <>
+                      {product.status.id === 1 && (
+                        <Button variant="contained" color="success" sx={{ marginRight: 1 }} onClick={() => handleApproveClick(product)}>
+                          承認
+                        </Button>
+                      )}
+                      {product.status.id === 2 && (
+                        <Button variant="contained" color="secondary" sx={{ marginRight: 1 }}>
+                          編集
+                        </Button>
+                      )}
+                    </>
+                  )}
+                  {user.role === 2 && (
+                    <Button variant="contained" color="error" sx={{ marginRight: 1 }}>
+                      キャンセル
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={!!approvalTarget} onClose={handleApproveClose} maxWidth="sm" fullWidth>
+        <DialogTitle>承認確認ダイアログ</DialogTitle>
+        <DialogContent>
+          <DialogContentText>以下の商品を承認しますか？</DialogContentText>
+          <Typography variant="body1">{approvalTarget?.name}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleApproveClose}>キャンセル</Button>
+          <Button onClick={handleApproveConfirm}>承認</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

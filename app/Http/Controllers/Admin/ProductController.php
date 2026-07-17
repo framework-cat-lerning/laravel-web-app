@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\ProductResource;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,6 +15,11 @@ use Inertia\Response;
 class ProductController extends Controller
 {
     use AuthorizesRequests;
+
+    public function __construct(
+        protected ProductService $productService
+    )
+    { }
 
     /**
      * 商品一覧
@@ -30,7 +37,7 @@ class ProductController extends Controller
 
         // 権限別のダッシュボードを表示
         return Inertia::render('products/index', [
-            'products' => ProductResource::collection($producst)->resource,
+            'products' => ProductResource::collection($producst),
         ]);
     }
 
@@ -57,5 +64,12 @@ class ProductController extends Controller
     /**
      * 商品申請許可
      */
-    public function approval() {}
+    public function approval(Product $product): RedirectResponse
+    {
+        $this->authorize('approval', $product);
+
+        $this->productService->approval($product);
+
+        return redirect()->route('admin.products.index');
+    }
 }
