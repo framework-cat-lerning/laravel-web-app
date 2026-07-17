@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -50,11 +51,20 @@ class Product extends Model
     /**
      * 在庫管理
      *
-     * @return HasOne<Product, $this>
+     * @return HasOne<Inventory, $this>
      */
     public function inventory()
     {
+        return $this->hasOne(Inventory::class);
+    }
 
-        return $this->hasOne(Product::class);
+    // スコープ
+    /**
+     * 承認すみか
+     * @return Builder<Product>
+     */
+    public function scopeIsApproval()
+    {
+        return $this->where('status', ProductStatus::APPROVED);
     }
 }

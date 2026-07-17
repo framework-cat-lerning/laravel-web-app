@@ -34,3 +34,19 @@ export type User = {
 export type UserResource = {
   data: User[];
 };
+
+export type ProductInventory = {
+  id: number;
+  product_id: number;
+  name: string;
+  description: string|null;
+  price: number;
+  status: ProductStatus;
+  quantity: number;
+  created_at: string|null;
+  updated_at: string|null;
+}
+
+export type ProductInventoryResource = {
+  data: ProductInventory[];
+};

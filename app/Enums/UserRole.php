@@ -45,6 +45,30 @@ enum UserRole: int
     }
 
     /**
+     * 在庫確認できるか
+     */
+    public function isInventory(): bool
+    {
+        return $this === self::ADMIN || $this === self::STAFF;
+    }
+
+    /**
+     * 在庫追加できるか
+     */
+    public function isAddInventory(): bool
+    {
+        return $this === self::STAFF;
+    }
+
+    /**
+     * 在庫操作できるか
+     */
+    public function isUpdateInventory(): bool
+    {
+        return $this === self::STAFF || $this === self::SHOP;
+    }
+
+    /**
      * 全ケースを取得
      *
      * @return array{

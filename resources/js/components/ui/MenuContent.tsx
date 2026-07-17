@@ -14,6 +14,7 @@ import { dashboard } from '@/routes';
 import { index as adminProductsIndex } from '@/routes/admin/products';
 import { index as adminUsersIndex } from '@/routes/admin/users';
 import { index as staffProductsIndex } from '@/routes/staff/products';
+import { index as inventoryIndex } from '@/routes/staff/inventries';
 
 const systemAdminListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
@@ -23,7 +24,7 @@ const systemAdminListItems = [
 
 const staffListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
-  { text: '在庫管理', icon: <InventoryIcon />, href: dashboard.url() },
+  { text: '在庫管理', icon: <InventoryIcon />, href: inventoryIndex.url() },
   { text: '追加申請', icon: <FileUploadIcon />, href: staffProductsIndex.url() },
 ];
 

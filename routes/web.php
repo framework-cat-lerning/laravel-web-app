@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Staff\InventoryController;
 use App\Http\Controllers\Staff\ProductRequestController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,5 +48,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/products/{product}/edit', [ProductRequestController::class, 'edit'])->name('products.edit');
         Route::post('/products/{product}/edit', [ProductRequestController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductRequestController::class, 'cancel'])->name('products.cancel');
+
+        // 在庫管理
+        Route::get('/inventries', [InventoryController::class, 'index'])->name('inventries.index');
+        Route::post('/inventries/{product}', [InventoryController::class, 'buy'])->name('inventries.buy');
     });
 });
