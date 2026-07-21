@@ -47,8 +47,9 @@ class ConsumptionLogService
         /** @var User|null */
         $user = $request->user();
         if (empty($user)) {
-            throw new Exception("Not found.");
+            throw new Exception('Not found.');
         }
+
         return $user->id;
     }
 }

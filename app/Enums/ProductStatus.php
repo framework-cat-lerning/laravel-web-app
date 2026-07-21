@@ -25,4 +25,12 @@ enum ProductStatus: int
     {
         return $this === self::PENDING;
     }
+
+    /**
+     * 承認すみか
+     */
+    public function isApproved(): bool
+    {
+        return $this === self::APPROVED;
+    }
 }

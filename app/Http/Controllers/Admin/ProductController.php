@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
@@ -56,17 +57,39 @@ class ProductController extends Controller
     /**
      * 商品編集画面
      */
-    public function edit() {}
+    public function edit(Product $product): Response
+    {
+        $this->authorize('update', $product);
+
+        return Inertia::render('products/form', [
+            'product' => $product,
+            'form_type' => 'edit',
+        ]);
+    }
 
     /**
      * 商品更新
      */
-    public function update() {}
+    public function update(Product $product, ProductUpdateRequest $request): RedirectResponse
+    {
+        $this->authorize('update', $product);
+
+        $this->productService->update($request, $product);
+
+        return redirect()->route('admin.products.index');
+    }
 
     /**
      * 商品削除
      */
-    public function delete() {}
+    public function delete(Product $product): RedirectResponse
+    {
+        $this->authorize('delete', $product);
+
+        $this->productService->delete($product);
+
+        return redirect()->route('staff.products.index');
+    }
 
     /**
      * 商品申請許可

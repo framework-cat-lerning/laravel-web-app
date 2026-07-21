@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\ProductStatus;
+use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Requests\Staff\ProductStoreRequest;
 use App\Models\Product;
 use App\Models\User;
@@ -41,6 +42,25 @@ class ProductService
     }
 
     /**
+     * 新規保存処理
+     */
+    public function update(ProductUpdateRequest $request, Product $product): Product
+    {
+        try {
+            return DB::transaction(function () use ($request, $product): Product {
+                $product->fill($request->validated());
+                $product->save();
+
+                return $product;
+            });
+        } catch (Throwable $e) {
+            report($e);
+
+            throw $e;
+        }
+    }
+
+    /**
      * 商品の承認申請キャンセル
      */
     public function cancel(Product $product): bool
@@ -48,6 +68,26 @@ class ProductService
         try {
             return DB::transaction(function () use ($product): bool {
                 if ($product->status->isPending()) {
+                    $product->delete();
+                }
+
+                return true;
+            });
+        } catch (Throwable $e) {
+            report($e);
+
+            throw $e;
+        }
+    }
+
+    /**
+     * 商品の削除
+     */
+    public function delete(Product $product): bool
+    {
+        try {
+            return DB::transaction(function () use ($product): bool {
+                if ($product->status->isApproved()) {
                     $product->delete();
                 }
 
