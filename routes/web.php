@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\Shop\ConsumptionController;
 use App\Http\Controllers\Staff\InventoryController;
 use App\Http\Controllers\Staff\ProductRequestController;
 use Illuminate\Support\Facades\Route;
@@ -52,5 +53,10 @@ Route::middleware('auth')->group(function () {
         // 在庫管理
         Route::get('/inventries', [InventoryController::class, 'index'])->name('inventries.index');
         Route::post('/inventries/{product}', [InventoryController::class, 'buy'])->name('inventries.buy');
+    });
+
+    // スタッフメニュー
+    Route::prefix('shop')->name('shop.')->group(function () {
+        Route::get('/products', [ConsumptionController::class, 'index'])->name('products.index');
     });
 });

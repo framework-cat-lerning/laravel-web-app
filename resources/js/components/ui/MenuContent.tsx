@@ -15,6 +15,7 @@ import { index as adminProductsIndex } from '@/routes/admin/products';
 import { index as adminUsersIndex } from '@/routes/admin/users';
 import { index as staffProductsIndex } from '@/routes/staff/products';
 import { index as inventoryIndex } from '@/routes/staff/inventries';
+import { index as shopProductsIndex } from '@/routes/shop/products';
 
 const systemAdminListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
@@ -30,7 +31,7 @@ const staffListItems = [
 
 const shopListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
-  { text: '商品販売', icon: <FileDownloadIcon />, href: dashboard.url() },
+  { text: '商品販売', icon: <FileDownloadIcon />, href: shopProductsIndex.url() },
 
 ];
 

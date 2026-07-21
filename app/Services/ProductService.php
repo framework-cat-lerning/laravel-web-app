@@ -74,4 +74,9 @@ class ProductService
             throw $e;
         }
     }
+
+    /**
+     * 商品の販売
+     */
+    public function consumption() {}
 }

@@ -62,10 +62,24 @@ class Product extends Model
     /**
      * 承認すみか
      *
+     * @param  Builder<Product>  $query
      * @return Builder<Product>
      */
-    public function scopeIsApproval()
+    public function scopeIsApproval(Builder $query)
     {
-        return $this->where('status', ProductStatus::APPROVED);
+        return $query->where('status', ProductStatus::APPROVED);
+    }
+
+    /**
+     * 在庫数があるか
+     *
+     * @param  Builder<Product>  $query
+     * @return Builder<Product>
+     */
+    public function scopeIsInvetory(Builder $query)
+    {
+        return $query->whereHas('inventory', function (Builder $query) {
+            $query->where('quantity', '>', 0);
+        });
     }
 }
