@@ -14,8 +14,8 @@ use function Pest\Laravel\patch;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-describe('Admin\ProductController::index', function () {
-    it('ログイン中のユーザーは商品一覧を表示できる', function () {
+describe('[Admin\ProductController]::[index]', function () {
+    it('[ProductControllerTest]-[001] ログイン中のユーザーは商品一覧を表示できる', function () {
         $user = User::factory()->create();
         Product::factory()->count(3)->create();
 
@@ -28,12 +28,12 @@ describe('Admin\ProductController::index', function () {
             );
     });
 
-    it('未ログインの場合はloginページへリダイレクトされる', function () {
+    it('[ProductControllerTest]-[002] 未ログインの場合はloginページへリダイレクトされる', function () {
         get(route('admin.products.index'))
             ->assertRedirect(route('login'));
     });
 
-    it('sort, directionパラメータを指定して並び替えできる', function () {
+    it('[ProductControllerTest]-[003] sort, directionパラメータを指定して並び替えできる', function () {
         $user = User::factory()->create();
         $productA = Product::factory()->create(['name' => 'Aaa']);
         $productB = Product::factory()->create(['name' => 'Bbb']);
@@ -48,8 +48,8 @@ describe('Admin\ProductController::index', function () {
     });
 });
 
-describe('Admin\ProductController::show', function () {
-    it('商品詳細を表示できる', function () {
+describe('[Admin\ProductController]::[show]', function () {
+    it('[ProductControllerTest]-[004] 商品詳細を表示できる', function () {
         $user = User::factory()->create();
         $product = Product::factory()->create();
 
@@ -65,7 +65,7 @@ describe('Admin\ProductController::show', function () {
             );
     });
 
-    it('未ログインの場合はloginページへリダイレクトされる', function () {
+    it('[ProductControllerTest]-[005] 未ログインの場合はloginページへリダイレクトされる', function () {
         $product = Product::factory()->create();
 
         get(route('admin.products.show', $product))
@@ -73,8 +73,8 @@ describe('Admin\ProductController::show', function () {
     });
 });
 
-describe('Admin\ProductController::edit', function () {
-    it('ADMINユーザーは編集画面を表示できる', function () {
+describe('[Admin\ProductController]::[edit]', function () {
+    it('[ProductControllerTest]-[006] ADMINユーザーは編集画面を表示できる', function () {
         $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $product = Product::factory()->create();
 
@@ -87,7 +87,7 @@ describe('Admin\ProductController::edit', function () {
             );
     });
 
-    it('ADMIN以外のユーザーは編集画面にアクセスできず403となる', function (UserRole $role) {
+    it('[ProductControllerTest]-[007] ADMIN以外のユーザーは編集画面にアクセスできず403となる', function (UserRole $role) {
         $user = User::factory()->create(['role' => $role]);
         $product = Product::factory()->create();
 
@@ -100,8 +100,8 @@ describe('Admin\ProductController::edit', function () {
     ]);
 });
 
-describe('Admin\ProductController::update', function () {
-    it('ADMINユーザーは商品を更新でき、一覧へリダイレクトされる', function () {
+describe('[Admin\ProductController]::[update]', function () {
+    it('[ProductControllerTest]-[008] ADMINユーザーは商品を更新でき、一覧へリダイレクトされる', function () {
         $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $product = Product::factory()->create(['name' => '旧商品名', 'price' => 500]);
 
@@ -120,7 +120,7 @@ describe('Admin\ProductController::update', function () {
         ]);
     });
 
-    it('ADMIN以外のユーザーは更新できず403となる', function (UserRole $role) {
+    it('[ProductControllerTest]-[009] ADMIN以外のユーザーは更新できず403となる', function (UserRole $role) {
         $user = User::factory()->create(['role' => $role]);
         $product = Product::factory()->create(['name' => '旧商品名']);
 
@@ -137,7 +137,7 @@ describe('Admin\ProductController::update', function () {
         'SHOP' => UserRole::SHOP,
     ]);
 
-    it('バリデーションエラーの場合は更新されない', function () {
+    it('[ProductControllerTest]-[010] バリデーションエラーの場合は更新されない', function () {
         $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $product = Product::factory()->create(['name' => '旧商品名']);
 
@@ -152,8 +152,8 @@ describe('Admin\ProductController::update', function () {
     });
 });
 
-describe('Admin\ProductController::delete', function () {
-    it('ADMINユーザーは承認済み商品を削除でき、admin.products一覧へリダイレクトされる', function () {
+describe('[Admin\ProductController]::[delete]', function () {
+    it('[ProductControllerTest]-[011] ADMINユーザーは承認済み商品を削除でき、admin.products一覧へリダイレクトされる', function () {
         $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $product = Product::factory()->create(['status' => ProductStatus::APPROVED]);
 
@@ -164,7 +164,7 @@ describe('Admin\ProductController::delete', function () {
         $this->assertSoftDeleted('products', ['id' => $product->id]);
     });
 
-    it('商品の申請者本人は削除できる', function () {
+    it('[ProductControllerTest]-[012] 商品の申請者本人は削除できる', function () {
         $requester = User::factory()->create(['role' => UserRole::STAFF]);
         $product = Product::factory()->create([
             'status' => ProductStatus::APPROVED,
@@ -178,7 +178,7 @@ describe('Admin\ProductController::delete', function () {
         $this->assertSoftDeleted('products', ['id' => $product->id]);
     });
 
-    it('ADMINでも申請者本人でもない場合は削除できず403となる', function () {
+    it('[ProductControllerTest]-[013] ADMINでも申請者本人でもない場合は削除できず403となる', function () {
         $other = User::factory()->create(['role' => UserRole::STAFF]);
         $product = Product::factory()->create([
             'status' => ProductStatus::APPROVED,
@@ -193,8 +193,8 @@ describe('Admin\ProductController::delete', function () {
     });
 });
 
-describe('Admin\ProductController::approval', function () {
-    it('ADMINユーザーは商品を承認でき、一覧へリダイレクトされる', function () {
+describe('[Admin\ProductController]::[approval]', function () {
+    it('[ProductControllerTest]-[014] ADMINユーザーは商品を承認でき、一覧へリダイレクトされる', function () {
         $user = User::factory()->create(['role' => UserRole::ADMIN]);
         $product = Product::factory()->create(['status' => ProductStatus::PENDING]);
 
@@ -208,7 +208,7 @@ describe('Admin\ProductController::approval', function () {
         ]);
     });
 
-    it('ADMIN以外のユーザーは承認できず403となる', function (UserRole $role) {
+    it('[ProductControllerTest]-[015] ADMIN以外のユーザーは承認できず403となる', function (UserRole $role) {
         $user = User::factory()->create(['role' => $role]);
         $product = Product::factory()->create(['status' => ProductStatus::PENDING]);
 
