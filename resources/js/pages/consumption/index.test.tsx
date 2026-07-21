@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import ConsumptionList from "@/feature/consumption/ConsumptionList";
 import ConsumptionIndex from "./index";
+
 
 vi.mock("@inertiajs/react", () => ({
   Head: ({ title }: { title: string }) => <title>{title}</title>,
@@ -13,8 +15,6 @@ vi.mock("@/components/ui/Header", () => ({
 vi.mock("@/feature/consumption/ConsumptionList", () => ({
   default: vi.fn(() => <div data-testid="consumption-list" />),
 }));
-
-import ConsumptionList from "@/feature/consumption/ConsumptionList";
 
 describe("ConsumptionIndex", () => {
   it("タイトルとヘッダーを表示する", () => {

@@ -1,9 +1,9 @@
+import { router } from "@inertiajs/react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { router } from "@inertiajs/react";
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import ConsumptionList from "./ConsumptionList";
 import type { ProductInventory } from "@/types";
+import ConsumptionList from "./ConsumptionList";
 
 vi.mock("@inertiajs/react", () => ({
   router: {
@@ -109,6 +109,7 @@ describe("ConsumptionList", () => {
     const user = userEvent.setup();
     vi.mocked(router.post).mockImplementation((_url, _data, options) => {
       options?.onSuccess?.({} as never);
+
       return {} as never;
     });
 
