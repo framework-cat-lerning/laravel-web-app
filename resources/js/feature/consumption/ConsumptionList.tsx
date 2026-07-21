@@ -11,7 +11,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import {  buy } from "@/routes/staff/inventries";
+import {  consumption } from "@/routes/shop/products";
 import type { ProductInventory } from "@/types";
 
 interface ConsumptionListProps {
@@ -34,7 +34,7 @@ export default function ConsumptionList({ products }: ConsumptionListProps) {
       return;
     }
 
-    router.post(buy.url({ product: product.id }), { count: count }, {
+    router.post(consumption.url({ product: product.id }), { count: count }, {
       onSuccess: () => {
         setSelectedProduct(null);
         setCount(0);

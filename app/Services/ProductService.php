@@ -3,14 +3,22 @@
 namespace App\Services;
 
 use App\Enums\ProductStatus;
+use App\Http\Requests\Shop\ConsumptionProductRequest;
 use App\Http\Requests\Staff\ProductStoreRequest;
+use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class ProductService
 {
+    public function __construct(
+        protected ConsumptionLogService $consumptionLogService
+    )
+    {}
+
     /**
      * 新規保存処理
      */
@@ -74,9 +82,4 @@ class ProductService
             throw $e;
         }
     }
-
-    /**
-     * 商品の販売
-     */
-    public function consumption() {}
 }

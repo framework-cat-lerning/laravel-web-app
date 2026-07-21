@@ -62,4 +62,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class, 'request_user_id');
     }
+    /**
+     * 購入履歴
+     *
+     * @return HasMany<ConsumptionLog, $this>
+     */
+    public function consumptionLogs()
+    {
+        return $this->hasMany(ConsumptionLog::class);
+    }
 }

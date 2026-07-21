@@ -58,5 +58,6 @@ Route::middleware('auth')->group(function () {
     // スタッフメニュー
     Route::prefix('shop')->name('shop.')->group(function () {
         Route::get('/products', [ConsumptionController::class, 'index'])->name('products.index');
+        Route::post('/products/{product}', [ConsumptionController::class, 'consumption'])->name('products.consumption');
     });
 });
