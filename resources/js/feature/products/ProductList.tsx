@@ -114,7 +114,7 @@ export default function ProductList({ products }: ProductListProps) {
               </tr>
             )}
             {products.map((product) => (
-              <TableRow key={product.id} onClick={() => onShowClick(product)}>
+              <TableRow key={product.id}>
                 <TableCell>{product.id}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.price}</TableCell>
@@ -130,7 +130,7 @@ export default function ProductList({ products }: ProductListProps) {
                         </Button>
                       )}
                       {product.status.id === 2 && (
-                        <Button variant="contained" color="secondary" sx={{ marginRight: 1 }}>
+                        <Button variant="contained" color="secondary" sx={{ marginRight: 1 }} onClick={() => onShowClick(product)}>
                           編集
                         </Button>
                       )}
