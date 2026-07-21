@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProductStatus;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProductFactory extends Factory
 {
+    protected $model = Product::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,7 +22,21 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->optional()->sentence(),
+            'price' => $this->faker->numberBetween(100, 10000),
+            'status' => ProductStatus::PENDING->value,
+            'request_user_id' => null,
         ];
+    }
+
+    /**
+     * 申請者ユーザーを紐付ける場合の状態
+     */
+    public function withRequestUser(?User $user = null): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'request_user_id' => $user?->id ?? User::factory(),
+        ]);
     }
 }
