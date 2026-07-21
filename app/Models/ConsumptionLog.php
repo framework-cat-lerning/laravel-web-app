@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -27,4 +29,24 @@ class ConsumptionLog extends Model
 {
     /** @use HasFactory<ConsumptionLogFactory> */
     use HasFactory;
+
+    // リレーション
+    /**
+     * 商品
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    /**
+     * 商品
+     *
+     * @return BelongsTo<Product, $this>
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

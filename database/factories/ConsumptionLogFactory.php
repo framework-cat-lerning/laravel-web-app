@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\ConsumptionLog;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ConsumptionLogFactory extends Factory
 {
+    protected $model = ConsumptionLog::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,7 +22,10 @@ class ConsumptionLogFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'product_id' => Product::factory(),
+            'consumption_at' => $this->faker->dateTimeBetween('-1 month'),
+            'quantity' => $this->faker->numberBetween(1, 10),
+            'user_id' => User::factory(),
         ];
     }
 }
