@@ -11,7 +11,7 @@ use function Pest\Laravel\post;
 
 uses(RefreshDatabase::class);
 
-describe('LoginController::index', function () {
+describe('[LoginController]::[index]', function () {
     it('[LoginControllerTest]-[001] 未ログイン状態でログインページを表示できる', function () {
         get(route('login'))
             ->assertOk()
@@ -27,7 +27,7 @@ describe('LoginController::index', function () {
     });
 });
 
-describe('LoginController::loggedIn', function () {
+describe('[LoginController]::[loggedIn]', function () {
     beforeEach(function () {
         RateLimiter::clear('test@example.com|127.0.0.1');
     });

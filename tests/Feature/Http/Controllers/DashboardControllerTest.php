@@ -10,7 +10,7 @@ use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
-describe('DashboardController', function () {
+describe('[DashboardController]', function () {
     it('[DashboardControllerTest]-[001] ログイン中のユーザーはdashboardページを表示できる', function () {
         $user = User::factory()->create();
 

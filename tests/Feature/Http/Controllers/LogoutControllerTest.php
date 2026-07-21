@@ -8,7 +8,7 @@ use function Pest\Laravel\post;
 
 uses(RefreshDatabase::class);
 
-describe('LogoutController', function () {
+describe('[LogoutController]', function () {
     it('[LogoutControllerTest]-[001] ログイン中のユーザーがログアウトでき、loginページへリダイレクトされる', function () {
         $user = User::factory()->create();
 
