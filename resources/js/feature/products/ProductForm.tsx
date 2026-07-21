@@ -9,11 +9,11 @@ import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Controller, useForm  } from 'react-hook-form';
 import type {UseFormSetError} from 'react-hook-form';
-import { index as productList, store as productStore } from '@/routes/staff/products';
-import { update as adminProductUpdate } from '@/routes/admin/products';
-import { productFormScheme   } from '@/schemes/product';
-import type {ProductFormInput, ProductFormOutput} from '@/schemes/product';
 import { useAuth } from '@/contexts/AuthContext';
+import { update as adminProductUpdate } from '@/routes/admin/products';
+import { index as productList, store as productStore } from '@/routes/staff/products';
+import { productFormScheme } from '@/schemes/product';
+import type {ProductFormInput, ProductFormOutput} from '@/schemes/product';
 
 interface ProductFormProps {
   form_type: 'new' | 'edit';
