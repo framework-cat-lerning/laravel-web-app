@@ -8,7 +8,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseCount;
 use function Pest\Laravel\assertDatabaseHas;
 
-test('在庫搬入者は商品申請作成画面を表示できる', function () {
+test('[ProductRequestControllerTest]-[001] 在庫搬入者は商品申請作成画面を表示できる', function () {
     $user = User::factory()->create(['role' => UserRole::STAFF]);
 
     actingAs($user)
@@ -19,7 +19,7 @@ test('在庫搬入者は商品申請作成画面を表示できる', function ()
             ->where('form_type', 'new'));
 });
 
-test('申請権限のないユーザは商品申請作成画面を表示できない', function () {
+test('[ProductRequestControllerTest]-[002] 申請権限のないユーザは商品申請作成画面を表示できない', function () {
     $user = User::factory()->create(['role' => UserRole::SHOP]);
 
     actingAs($user)
@@ -27,7 +27,7 @@ test('申請権限のないユーザは商品申請作成画面を表示でき�
         ->assertForbidden();
 });
 
-test('在庫搬入者は商品申請を保存できる', function () {
+test('[ProductRequestControllerTest]-[003] 在庫搬入者は商品申請を保存できる', function () {
     $user = User::factory()->create(['role' => UserRole::STAFF]);
 
     $response = actingAs($user)->post(route('staff.products.store'), [
@@ -47,7 +47,7 @@ test('在庫搬入者は商品申請を保存できる', function () {
     ]);
 });
 
-test('申請権限のないユーザは保存できない', function () {
+test('[ProductRequestControllerTest]-[004] 申請権限のないユーザは保存できない', function () {
     $user = User::factory()->create(['role' => UserRole::SHOP]);
 
     $response = actingAs($user)->post(route('staff.products.store'), [
@@ -59,7 +59,7 @@ test('申請権限のないユーザは保存できない', function () {
     assertDatabaseCount('products', 0);
 });
 
-test('必須項目が無い場合はバリデーションエラーになる', function () {
+test('[ProductRequestControllerTest]-[005] 必須項目が無い場合はバリデーションエラーになる', function () {
     $user = User::factory()->create(['role' => UserRole::STAFF]);
 
     $response = actingAs($user)
@@ -77,7 +77,7 @@ test('必須項目が無い場合はバリデーションエラーになる', fu
     assertDatabaseCount('products', 0);
 });
 
-test('価格が整数でない場合はバリデーションエラーになる', function () {
+test('[ProductRequestControllerTest]-[006] 価格が整数でない場合はバリデーションエラーになる', function () {
     $user = User::factory()->create(['role' => UserRole::STAFF]);
 
     $response = actingAs($user)
