@@ -5,7 +5,10 @@ namespace App\Services;
 use App\Http\Requests\Shop\ConsumptionProductRequest;
 use App\Models\ConsumptionLog;
 use App\Models\Product;
+use App\Models\User;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
@@ -19,11 +22,11 @@ class ConsumptionLogService
         try {
             return DB::transaction(function () use ($product, $request): bool {
                 // ログの生成
-                $consumptionLog = new ConsumptionLog();
+                $consumptionLog = new ConsumptionLog;
                 $consumptionLog->fill([
                     'consumption_at' => Carbon::now(),
-                    'quantity' => $request->input("count"),
-                    'user_id' => $request->user()->id,
+                    'quantity' => $request->input('count'),
+                    'user_id' => $this->getUserID($request),
                 ]);
                 $product->consumptionLogs()->save($consumptionLog);
 
@@ -34,5 +37,18 @@ class ConsumptionLogService
 
             throw $e;
         }
+    }
+
+    /**
+     * ユーザID
+     */
+    public function getUserID(Request $request): int
+    {
+        /** @var User|null */
+        $user = $request->user();
+        if (empty($user)) {
+            throw new Exception("Not found.");
+        }
+        return $user->id;
     }
 }

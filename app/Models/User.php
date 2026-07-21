@@ -62,6 +62,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Product::class, 'request_user_id');
     }
+
     /**
      * 購入履歴
      *

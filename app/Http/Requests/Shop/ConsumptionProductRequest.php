@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Shop;
 
 use App\Models\ConsumptionLog;
-use App\Models\Inventory;
 use App\Models\Product;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

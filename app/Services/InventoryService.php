@@ -14,8 +14,7 @@ class InventoryService
 {
     public function __construct(
         protected ConsumptionLogService $consumptionLogService
-    )
-    {}
+    ) {}
 
     /**
      * 在庫の購入
@@ -57,11 +56,12 @@ class InventoryService
     {
         try {
             return DB::transaction(function () use ($product, $request): bool {
-                $count = $request->input("count");
+                /** @var int */
+                $count = $request->input('count');
                 /** @var Inventory */
                 $inventory = $product->inventory;
                 if ($inventory->quantity < $count) {
-                    throw new Exception("在庫数が不足してます");
+                    throw new Exception('在庫数が不足してます');
                 }
                 $inventory->quantity -= $count;
                 $inventory->save();

@@ -20,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable("product_id", "consumption_at", "quantity", "user_id")]
+#[Fillable('product_id', 'consumption_at', 'quantity', 'user_id')]
 #[UseFactory(ConsumptionLogFactory::class)]
 #[UsePolicy(ConsumptionLogPolicy::class)]
 class ConsumptionLog extends Model

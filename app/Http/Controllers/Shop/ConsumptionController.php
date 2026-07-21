@@ -7,7 +7,6 @@ use App\Http\Requests\Shop\ConsumptionProductRequest;
 use App\Http\Resources\Shop\ProductConsumptionResource;
 use App\Models\Product;
 use App\Services\InventoryService;
-use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
