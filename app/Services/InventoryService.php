@@ -58,7 +58,7 @@ class InventoryService
             return DB::transaction(function () use ($product, $request): bool {
                 /** @var int */
                 $count = $request->input('count');
-                /** @var Inventory */
+                /** @var Inventory|null */
                 $inventory = $product->inventory;
                 if (! $inventory || $inventory->quantity < $count) {
                     throw new Exception('在庫数が不足してます');
