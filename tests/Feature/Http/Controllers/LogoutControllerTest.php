@@ -2,15 +2,24 @@
 
 use App\Models\User;
 
-test('[LogoutControllerTest]-[001] 認証済みユーザはログアウトできる', function () {
-    $user = User::factory()->create();
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\post;
 
-    $response = $this->actingAs($user)->post(route('logout'));
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    $this->assertGuest();
-    $response->assertRedirect(route('login'));
-});
+describe('LogoutController', function () {
+    it('[LogoutControllerTest]-[001] ログイン中のユーザーがログアウトでき、loginページへリダイレクトされる', function () {
+        $user = User::factory()->create();
 
-test('[LogoutControllerTest]-[002] ゲストはログアウトにアクセスするとログイン画面へリダイレクトされる', function () {
-    $this->post(route('logout'))->assertRedirect(route('login'));
+        actingAs($user)
+            ->post(route('logout'))
+            ->assertRedirect(route('login'));
+
+        $this->assertGuest();
+    });
+
+    it('[LogoutControllerTest]-[002] 未ログインの場合はauthミドルウェアによりloginページへリダイレクトされる', function () {
+        post(route('logout'))
+            ->assertRedirect(route('login'));
+    });
 });
