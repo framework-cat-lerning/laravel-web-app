@@ -2,15 +2,13 @@
 
 use App\Enums\UserRole;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
-use function Pest\Laravel\post;
-use function Pest\Laravel\put;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 describe('[Admin\UserController]::[index]', function () {
     it('[UserControllerTest]-[001] ログイン中のユーザーはユーザー一覧を表示できる', function () {

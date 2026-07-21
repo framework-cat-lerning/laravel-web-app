@@ -4,15 +4,13 @@ use App\Enums\ProductStatus;
 use App\Enums\UserRole;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
-use function Pest\Laravel\put;
-use function Pest\Laravel\patch;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 describe('[Admin\ProductController]::[index]', function () {
     it('[ProductControllerTest]-[001] ログイン中のユーザーは商品一覧を表示できる', function () {

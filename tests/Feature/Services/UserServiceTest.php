@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -52,7 +53,7 @@ describe('[UserService]::[store]', function () {
         ]);
 
         expect(fn () => $service->store($request))
-            ->toThrow(Illuminate\Database\QueryException::class);
+            ->toThrow(QueryException::class);
 
         expect(User::where('email', 'dup@example.com')->count())->toBe(1);
     });

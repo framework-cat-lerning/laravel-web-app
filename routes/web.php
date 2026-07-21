@@ -45,9 +45,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/products', [ProductRequestController::class, 'index'])->name('products.index');
         Route::get('/products/new', [ProductRequestController::class, 'new'])->name('products.new');
         Route::post('/products/new', [ProductRequestController::class, 'store'])->name('products.store');
-        Route::get('/products/{product}', [ProductRequestController::class, 'edit'])->name('products.show');
-        Route::get('/products/{product}/edit', [ProductRequestController::class, 'edit'])->name('products.edit');
-        Route::post('/products/{product}/edit', [ProductRequestController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductRequestController::class, 'cancel'])->name('products.cancel');
 
         // 在庫管理

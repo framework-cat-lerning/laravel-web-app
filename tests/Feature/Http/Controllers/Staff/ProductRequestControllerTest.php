@@ -2,94 +2,154 @@
 
 use App\Enums\ProductStatus;
 use App\Enums\UserRole;
+use App\Models\Product;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\assertDatabaseCount;
-use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\get;
 
-test('[ProductRequestControllerTest]-[001] 在庫搬入者は商品申請作成画面を表示できる', function () {
-    $user = User::factory()->create(['role' => UserRole::STAFF]);
+uses(RefreshDatabase::class);
 
-    actingAs($user)
-        ->get(route('staff.products.new'))
-        ->assertOk()
-        ->assertInertia(fn ($page) => $page
-            ->component('products/form')
-            ->where('form_type', 'new'));
+describe('[Staff\ProductRequestController]::[index]', function () {
+    it('[ProductRequestControllerTest]-[001] ログイン中のユーザーは自分が申請した商品一覧のみ表示できる', function () {
+        $user = User::factory()->create();
+        $ownProduct = Product::factory()->create(['request_user_id' => $user->id]);
+        $otherProduct = Product::factory()->create(['request_user_id' => User::factory()->create()->id]);
+
+        actingAs($user)
+            ->get(route('staff.products.index'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('products/index')
+                ->has('products.data', 1)
+                ->where('products.data.0.id', $ownProduct->id)
+            );
+    });
+
+    it('[ProductRequestControllerTest]-[002] 未ログインの場合はloginページへリダイレクトされる', function () {
+        get(route('staff.products.index'))
+            ->assertRedirect(route('login'));
+    });
 });
 
-test('[ProductRequestControllerTest]-[002] 申請権限のないユーザは商品申請作成画面を表示できない', function () {
-    $user = User::factory()->create(['role' => UserRole::SHOP]);
+describe('[Staff\ProductRequestController]::[new]', function () {
+    it('[ProductRequestControllerTest]-[003] STAFFユーザーは申請作成画面を表示できる', function () {
+        $user = User::factory()->create(['role' => UserRole::STAFF]);
 
-    actingAs($user)
-        ->get(route('staff.products.new'))
-        ->assertForbidden();
+        actingAs($user)
+            ->get(route('staff.products.new'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('products/form')
+                ->where('form_type', 'new')
+            );
+    });
+
+    it('[ProductRequestControllerTest]-[004] STAFF以外のユーザーは申請作成画面にアクセスできず403となる', function (UserRole $role) {
+        $user = User::factory()->create(['role' => $role]);
+
+        actingAs($user)
+            ->get(route('staff.products.new'))
+            ->assertForbidden();
+    })->with([
+        'ADMIN' => UserRole::ADMIN,
+        'SHOP' => UserRole::SHOP,
+    ]);
 });
 
-test('[ProductRequestControllerTest]-[003] 在庫搬入者は商品申請を保存できる', function () {
-    $user = User::factory()->create(['role' => UserRole::STAFF]);
+describe('[Staff\ProductRequestController]::[store]', function () {
+    it('[ProductRequestControllerTest]-[005] STAFFユーザーは商品申請を作成でき、一覧へリダイレクトされる', function () {
+        $user = User::factory()->create(['role' => UserRole::STAFF]);
 
-    $response = actingAs($user)->post(route('staff.products.store'), [
-        'name' => 'テスト商品',
-        'description' => 'テスト商品の説明',
-        'price' => 1500,
+        actingAs($user)
+            ->post(route('staff.products.store'), [
+                'name' => '新規申請商品',
+                'description' => '説明',
+                'price' => 3000,
+            ])
+            ->assertRedirect(route('staff.products.index'));
+
+        $this->assertDatabaseHas('products', [
+            'name' => '新規申請商品',
+            'request_user_id' => $user->id,
+            'status' => ProductStatus::PENDING->value,
+        ]);
+    });
+
+    it('[ProductRequestControllerTest]-[006] STAFF以外のユーザーは作成できず403となる', function (UserRole $role) {
+        $user = User::factory()->create(['role' => $role]);
+
+        actingAs($user)
+            ->post(route('staff.products.store'), [
+                'name' => '新規申請商品',
+                'price' => 3000,
+            ])
+            ->assertForbidden();
+
+        $this->assertDatabaseMissing('products', ['name' => '新規申請商品']);
+    })->with([
+        'ADMIN' => UserRole::ADMIN,
+        'SHOP' => UserRole::SHOP,
     ]);
 
-    $response->assertRedirect(route('staff.products.index'));
+    it('[ProductRequestControllerTest]-[007] バリデーションエラーの場合は作成されない', function () {
+        $user = User::factory()->create(['role' => UserRole::STAFF]);
 
-    assertDatabaseHas('products', [
-        'name' => 'テスト商品',
-        'description' => 'テスト商品の説明',
-        'price' => 1500,
-        'status' => ProductStatus::PENDING->value,
-        'request_user_id' => $user->id,
-    ]);
+        actingAs($user)
+            ->post(route('staff.products.store'), [
+                'name' => '',
+                'price' => 3000,
+            ])
+            ->assertSessionHasErrors('name');
+
+        expect(Product::count())->toBe(0);
+    });
 });
 
-test('[ProductRequestControllerTest]-[004] 申請権限のないユーザは保存できない', function () {
-    $user = User::factory()->create(['role' => UserRole::SHOP]);
-
-    $response = actingAs($user)->post(route('staff.products.store'), [
-        'name' => 'テスト商品',
-        'price' => 1500,
-    ]);
-
-    $response->assertForbidden();
-    assertDatabaseCount('products', 0);
-});
-
-test('[ProductRequestControllerTest]-[005] 必須項目が無い場合はバリデーションエラーになる', function () {
-    $user = User::factory()->create(['role' => UserRole::STAFF]);
-
-    $response = actingAs($user)
-        ->from(route('staff.products.new'))
-        ->post(route('staff.products.store'), [
-            'name' => '',
-            'price' => 0,
+describe('[Staff\ProductRequestController]::[cancel]', function () {
+    it('[ProductRequestControllerTest]-[008] 申請者本人はPENDING状態の商品をキャンセルでき、一覧へリダイレクトされる', function () {
+        $user = User::factory()->create(['role' => UserRole::STAFF]);
+        $product = Product::factory()->create([
+            'request_user_id' => $user->id,
+            'status' => ProductStatus::PENDING,
         ]);
 
-    $response->assertRedirect(route('staff.products.new'));
-    $response->assertSessionHasErrors([
-        'name' => '商品名を入力してください',
-        'price' => '商品価格は1以上で入力してください',
-    ]);
-    assertDatabaseCount('products', 0);
-});
+        actingAs($user)
+            ->delete(route('staff.products.cancel', $product))
+            ->assertRedirect(route('staff.products.index'));
 
-test('[ProductRequestControllerTest]-[006] 価格が整数でない場合はバリデーションエラーになる', function () {
-    $user = User::factory()->create(['role' => UserRole::STAFF]);
+        $this->assertSoftDeleted('products', ['id' => $product->id]);
+    });
 
-    $response = actingAs($user)
-        ->from(route('staff.products.new'))
-        ->post(route('staff.products.store'), [
-            'name' => 'テスト商品',
-            'price' => '1.5',
+    it('[ProductRequestControllerTest]-[009] ADMINユーザーも他者の申請をキャンセルできる', function () {
+        $admin = User::factory()->create(['role' => UserRole::ADMIN]);
+        $requester = User::factory()->create(['role' => UserRole::STAFF]);
+        $product = Product::factory()->create([
+            'request_user_id' => $requester->id,
+            'status' => ProductStatus::PENDING,
         ]);
 
-    $response->assertRedirect(route('staff.products.new'));
-    $response->assertSessionHasErrors([
-        'price' => '商品価格は整数で入力してください',
-    ]);
-    assertDatabaseCount('products', 0);
+        actingAs($admin)
+            ->delete(route('staff.products.cancel', $product))
+            ->assertRedirect(route('staff.products.index'));
+
+        $this->assertSoftDeleted('products', ['id' => $product->id]);
+    });
+
+    it('[ProductRequestControllerTest]-[010] 申請者本人でもADMINでもない場合はキャンセルできず403となる', function () {
+        $user = User::factory()->create(['role' => UserRole::STAFF]);
+        $requester = User::factory()->create(['role' => UserRole::STAFF]);
+        $product = Product::factory()->create([
+            'request_user_id' => $requester->id,
+            'status' => ProductStatus::PENDING,
+        ]);
+
+        actingAs($user)
+            ->delete(route('staff.products.cancel', $product))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'deleted_at' => null]);
+    });
 });

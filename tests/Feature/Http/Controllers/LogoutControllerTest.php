@@ -1,11 +1,12 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\post;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 describe('LogoutController', function () {
     it('[LogoutControllerTest]-[001] ログイン中のユーザーがログアウトでき、loginページへリダイレクトされる', function () {
