@@ -88,7 +88,7 @@ class ProductController extends Controller
 
         $this->productService->delete($product);
 
-        return redirect()->route('staff.products.index');
+        return redirect()->route('admin.products.index');
     }
 
     /**

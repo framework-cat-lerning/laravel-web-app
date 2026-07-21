@@ -10,8 +10,10 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm  } from 'react-hook-form';
 import type {UseFormSetError} from 'react-hook-form';
 import { index as productList, store as productStore, update as productUpdate } from '@/routes/staff/products';
+import { update as adminProductUpdate } from '@/routes/admin/products';
 import { productFormScheme   } from '@/schemes/product';
 import type {ProductFormInput, ProductFormOutput} from '@/schemes/product';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ProductFormProps {
   form_type: 'new' | 'edit';
@@ -42,6 +44,7 @@ function applyServerErrors(
 
 export default function ProductForm({ form_type, product }: ProductFormProps) {
   const { errors: pageErrors } = usePage().props;
+  const { auth } = useAuth();
   const {
     control,
     handleSubmit,
@@ -100,7 +103,12 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
       if (form_type === 'new') {
         router.post(productStore.url(), data, options);
       } else {
-        router.put(productUpdate.url({ product: product?.id ?? 0 }), data, options);
+        // ユーザが管理者なら管理者用の更新APIを呼び出す
+        if (auth.user.role === 1) {
+          router.put(adminProductUpdate.url({ product: product?.id ?? 0 }), data, options);
+        } else {
+          router.put(productUpdate.url({ product: product?.id ?? 0 }), data, options);
+        }
       }
     });
   });
