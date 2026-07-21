@@ -9,7 +9,7 @@ import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Controller, useForm  } from 'react-hook-form';
 import type {UseFormSetError} from 'react-hook-form';
-import { index as productList, store as productStore, update as productUpdate } from '@/routes/staff/products';
+import { index as productList, store as productStore } from '@/routes/staff/products';
 import { update as adminProductUpdate } from '@/routes/admin/products';
 import { productFormScheme   } from '@/schemes/product';
 import type {ProductFormInput, ProductFormOutput} from '@/schemes/product';
@@ -107,7 +107,7 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
         if (auth.user.role === 1) {
           router.put(adminProductUpdate.url({ product: product?.id ?? 0 }), data, options);
         } else {
-          router.put(productUpdate.url({ product: product?.id ?? 0 }), data, options);
+          // 管理者以外の場合は一旦更新処理はできない
         }
       }
     });
