@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Inventory;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class InventoryFactory extends Factory
 {
+    protected $model = Inventory::class;
+
     /**
      * Define the model's default state.
      *
@@ -18,7 +21,8 @@ class InventoryFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'product_id' => Product::factory(),
+            'quantity' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

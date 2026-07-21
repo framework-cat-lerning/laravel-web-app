@@ -60,7 +60,7 @@ class InventoryService
                 $count = $request->input('count');
                 /** @var Inventory */
                 $inventory = $product->inventory;
-                if ($inventory->quantity < $count) {
+                if (! $inventory || $inventory->quantity < $count) {
                     throw new Exception('在庫数が不足してます');
                 }
                 $inventory->quantity -= $count;

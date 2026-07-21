@@ -36,7 +36,7 @@ class ProductFactory extends Factory
     public function withRequestUser(?User $user = null): static
     {
         return $this->state(fn (array $attributes) => [
-            'request_user_id' => $user?->id ?? User::factory(),
+            'request_user_id' => ! empty($user) ? $user->id : User::factory(),
         ]);
     }
 }

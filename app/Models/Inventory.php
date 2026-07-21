@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -26,4 +27,13 @@ class Inventory extends Model
     use HasFactory, SoftDeletes;
 
     // リレーション
+    /**
+     * 商品
+     *
+     * @return BelongsTo<Product, $this>
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
