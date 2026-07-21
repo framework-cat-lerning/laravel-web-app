@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $this->isAdmin();
+        return $this->isAdmin($user);
     }
 
     /**
@@ -36,7 +36,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $this->isAdmin() || $user->id === $model->id;
+        return $this->isAdmin($user) || $user->id === $model->id;
     }
 
     /**
@@ -44,7 +44,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return $this->isAdmin() || $user->id === $model->id;
+        return $this->isAdmin($user) || $user->id === $model->id;
     }
 
     /**
@@ -63,11 +63,8 @@ class UserPolicy
         return false;
     }
 
-    private function isAdmin(): bool
+    private function isAdmin(User $user): bool
     {
-        /** @var User */
-        $user = Auth::getUser();
-
         return $user->role->isAdmin();
     }
 }
