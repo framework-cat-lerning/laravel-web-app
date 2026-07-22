@@ -35,7 +35,7 @@ export default function InputRow({
         {children ? children : (
           <Controller
             control={target_control}
-            name={input_name}
+            name={input_name ?? ''}
             render={({ field }) => (
               <TextField
                 {...field}
