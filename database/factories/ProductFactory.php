@@ -35,8 +35,18 @@ class ProductFactory extends Factory
      */
     public function withRequestUser(?User $user = null): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'request_user_id' => ! empty($user) ? $user->id : User::factory(),
+        ]);
+    }
+
+    /**
+     * 商品の申請済み状態
+     */
+    public function approved(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'status' => 2,
         ]);
     }
 }
