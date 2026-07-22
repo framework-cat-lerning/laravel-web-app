@@ -16,6 +16,7 @@ import { index as adminUsersIndex } from '@/routes/admin/users';
 import { index as staffProductsIndex } from '@/routes/staff/products';
 import { index as inventoryIndex } from '@/routes/staff/inventries';
 import { index as shopProductsIndex } from '@/routes/shop/products';
+import { useLocation } from 'react-router-dom';
 
 const systemAdminListItems = [
   { text: 'ダッシュボード', icon: <HomeRoundedIcon />, href: dashboard.url() },
@@ -37,7 +38,13 @@ const shopListItems = [
 
 export default function MenuContent() {
   const { auth } = useAuth();
-  let mainListItems: { text: string; icon: React.ReactNode; href: string }[] = [];
+  const currentPath = window.location.pathname;
+
+  let mainListItems: {
+    text: string;
+    icon: React.ReactNode;
+    href: string;
+  }[] = [];
 
   if (auth.user.role === 1) {
     mainListItems = systemAdminListItems;
@@ -50,14 +57,26 @@ export default function MenuContent() {
   return (
     <Stack sx={{ mt: 2, flexGrow: 1, p: 1, justifyContent: 'space-between' }}>
       <List dense>
-        {mainListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton selected={index === 0} href={item.href}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {mainListItems.map((item) => {
+          const isActive =
+            item.href === dashboard.url()
+              ? currentPath === item.href
+              : currentPath === item.href ||
+                currentPath.startsWith(`${item.href}/`);
+
+          return (
+            <ListItem
+              key={item.href}
+              disablePadding
+              sx={{ display: 'block' }}
+            >
+              <ListItemButton href={item.href} selected={isActive}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
       </List>
     </Stack>
   );

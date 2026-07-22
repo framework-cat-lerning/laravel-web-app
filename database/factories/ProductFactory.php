@@ -39,4 +39,14 @@ class ProductFactory extends Factory
             'request_user_id' => ! empty($user) ? $user->id : User::factory(),
         ]);
     }
+
+    /**
+     * 商品の申請済み状態
+     */
+    public function approved(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => 2,
+        ]);
+    }
 }

@@ -2,15 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Services\Dashboard\ChartService;
+use App\Services\Dashboard\LogTableService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        protected ChartService $chartService,
+        protected LogTableService $logTableService
+    ) {}
+
     public function __invoke(Request $request): Response
     {
+        /** @var User */
+        $user = $request->user();
+
+        $chartResourse = [];
+        $logResourse = [];
+        if ($user->role->isAdmin()) {
+            $chartResourse['consumptions'] = [];
+            $logResourse['inventories'] = $this->logTableService->getInventoryLogTableData();
+
+        } elseif ($user->role->isStaff()) {
+            $chartResourse['products'] = $this->chartService->getProductData();
+            $logResourse['consumptions'] = $this->logTableService->getConsumptionLogTableData();
+
+        } elseif ($user->role->isShop()) {
+            $chartResourse['consumptions'] = [];
+        }
+
         // 権限別のダッシュボードを表示
-        return Inertia::render('dashboard');
+        return Inertia::render('dashboard', [
+            'charts' => $chartResourse,
+            'logs' => $logResourse,
+        ]);
     }
 }

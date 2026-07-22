@@ -29,6 +29,18 @@ class ConsumptionLog extends Model
     /** @use HasFactory<ConsumptionLogFactory> */
     use HasFactory;
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'consumption_at' => 'datetime',
+        ];
+    }
+
     // リレーション
     /**
      * 商品

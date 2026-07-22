@@ -50,3 +50,41 @@ export type ProductInventory = {
 export type ProductInventoryResource = {
   data: ProductInventory[];
 };
+
+export type ChartData = {
+  title: string;
+  value: string;
+  interval: string;
+  trend: 'up' | 'down' | 'neutral';
+  data: number[];
+}
+
+export type LogTableColumn = {
+  field: string;
+  headerName: string;
+  headerAlign: 'left' | 'center' | 'right';
+  align: 'left' | 'center' | 'right';
+  flex: number;
+  minWidth: number;
+}
+export type ConsumptionLogData = {
+  id: number;
+  product_name: string;
+  consumption_at: string;
+  quantity: number;
+  total_amount: number;
+}
+export type ConsumptionLogDataResource = {
+  columns: LogTableColumn[],
+  rows: ConsumptionLogData[];
+}
+export type InventoryLogData = {
+  id: number;
+  product_name: string;
+  quantity: number;
+  updated_at: string;
+}
+export type InventoryLogDataResource = {
+  columns: LogTableColumn[],
+  rows: InventoryLogData[];
+}

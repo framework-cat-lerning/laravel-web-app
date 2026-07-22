@@ -5,11 +5,10 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { UseFormSetError } from 'react-hook-form';
+import InputRow from '@/components/form/InputRow';
 import { index as userList, store as userStore, update as userUpdate } from '@/routes/admin/users';
 import { userCreateFormScheme, userEditFormScheme } from '@/schemes/user';
 import type { UserFormOutput } from '@/schemes/user';
@@ -129,132 +128,55 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
           </Alert>
         )}
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            ユーザ名
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="ユーザ名"
-                  error={Boolean(errors.name)}
-                  helperText={errors.name?.message}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow
+          label="ユーザ名"
+          input_name="name"
+          target_errors={errors.name ? { message: errors.name.message as string } : undefined}
+          target_control={control}
+        />
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            メールアドレス
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="メールアドレス"
-                  error={Boolean(errors.email)}
-                  helperText={errors.email?.message}
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      alignItems: 'flex-start',
-                    },
-                  }}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="メールアドレス"
+          input_name="email"
+          target_errors={errors.email ? { message: errors.email.message as string } : undefined}
+          target_control={control}
+        />
 
         {/* パスワード */}
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            パスワード
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="password"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  type="password"
-                  fullWidth
-                  label="パスワード"
-                  error={Boolean(errors.password)}
-                  helperText={
-                    errors.password?.message ??
-                    (form_type === 'edit' ? '変更する場合のみ入力してください' : undefined)
-                  }
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="パスワード"
+          input_name="password"
+          target_errors={errors.password ? { message: errors.password.message as string } : undefined}
+          target_control={control}
+        />
 
         {/* パスワード確認 */}
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            パスワード（確認）
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="password_confirmation"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  type="password"
-                  fullWidth
-                  label="パスワード（確認）"
-                  error={Boolean(errors.password_confirmation)}
-                  helperText={errors.password_confirmation?.message}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="パスワード（確認）"
+          input_name="password_confirmation"
+          target_errors={errors.password_confirmation ? { message: errors.password_confirmation.message as string } : undefined}
+          target_control={control}
+        />
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            権限
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="role"
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="権限"
-                  error={Boolean(errors.role)}
-                >
-                  {options.roles.map((role) => (
-                    <MenuItem key={role.id} value={role.id}>
-                      {role.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow
+          label="権限">
+          <Controller
+            control={control}
+            name="role"
+            render={({ field }) => (
+              <Select
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                label="権限"
+                error={Boolean(errors.role)}
+              >
+                {options.roles.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    {role.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </InputRow>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>

@@ -45,6 +45,22 @@ enum UserRole: int
     }
 
     /**
+     * スタッフユーザか
+     */
+    public function isStaff(): bool
+    {
+        return $this === self::STAFF;
+    }
+
+    /**
+     * 店舗ユーザか
+     */
+    public function isShop(): bool
+    {
+        return $this === self::SHOP;
+    }
+
+    /**
      * 在庫確認できるか
      */
     public function isInventory(): bool

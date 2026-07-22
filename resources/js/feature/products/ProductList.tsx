@@ -2,11 +2,7 @@ import { Link } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,6 +12,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import { useAuth } from '@/contexts/AuthContext';
 import { approval, show } from '@/routes/admin/products';
 import { newMethod as productCreate } from '@/routes/staff/products';
@@ -155,28 +152,31 @@ export default function ProductList({ products }: ProductListProps) {
         </Table>
       </TableContainer>
 
-      <Dialog open={!!approvalTarget} onClose={handleApproveClose} maxWidth="sm" fullWidth>
-        <DialogTitle>承認確認ダイアログ</DialogTitle>
-        <DialogContent>
-          <DialogContentText>以下の商品を承認しますか？</DialogContentText>
-          <Typography variant="body1">{approvalTarget?.name}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleApproveClose}>キャンセル</Button>
-          <Button onClick={handleApproveConfirm}>承認</Button>
-        </DialogActions>
-      </Dialog>
+      <ConfirmDialog
+        open={!!approvalTarget}
+        title="承認確認ダイアログ"
+        message={
+          <>
+            <DialogContentText>以下の商品を承認しますか？</DialogContentText>
+            <Typography variant="body1">{approvalTarget?.name}</Typography>
+          </>
+        }
+        onOK={handleApproveConfirm}
+        onCancel={handleApproveClose}
+      />
 
-      <Dialog open={!!cancelTarget} onClose={handleCancelClose} maxWidth="sm" fullWidth>
-        <DialogTitle>キャンセル確認ダイアログ</DialogTitle>
-        <DialogContent>
-          <DialogContentText>以下の商品の申請をキャンセルしますか？</DialogContentText>
-          <Typography variant="body1">{cancelTarget?.name}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancelConfirm}>キャンセル</Button>
-        </DialogActions>
-      </Dialog>
+      <ConfirmDialog
+        open={!!cancelTarget}
+        title="キャンセル確認ダイアログ"
+        message={
+          <>
+            <DialogContentText>以下の商品の申請をキャンセルしますか？</DialogContentText>
+            <Typography variant="body1">{cancelTarget?.name}</Typography>
+          </>
+        }
+        onOK={handleCancelConfirm}
+        onCancel={handleCancelClose}
+      />
     </>
   );
 }
