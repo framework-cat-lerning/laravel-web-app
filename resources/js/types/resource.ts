@@ -50,3 +50,11 @@ export type ProductInventory = {
 export type ProductInventoryResource = {
   data: ProductInventory[];
 };
+
+export type ChartData = {
+  title: string;
+  value: string;
+  interval: string;
+  trend: 'up' | 'down' | 'neutral';
+  data: number[];
+}

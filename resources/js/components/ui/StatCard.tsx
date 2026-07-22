@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { lineClasses } from '@mui/x-charts/LineChart';
-
+import { ChartData } from '@/types/resource';
 export type StatCardProps = {
   title: string;
   value: string;
@@ -48,7 +48,7 @@ export default function StatCard({
   interval,
   trend,
   data,
-}: StatCardProps) {
+}: ChartData) {
   const theme = useTheme();
   const daysInWeek = getDaysInMonth(4, 2024);
 
