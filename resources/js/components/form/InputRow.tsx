@@ -11,6 +11,7 @@ interface InputRowProps {
     message: string;
   };
   children?: React.ReactNode;
+  text_options?: any;
 }
 
 export default function InputRow({
@@ -20,14 +21,15 @@ export default function InputRow({
   target_errors = {
     message: ''
   },
-  children
+  children,
+  text_options
 }: InputRowProps) {
-  if (!input_name) {
+  if (!input_name && !children) {
     return null;
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 , marginBottom: 2}}>
       <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>{label}</Text>
       <Box sx={{ flex: 10 }}>
         {children ? children : (
@@ -37,6 +39,7 @@ export default function InputRow({
             render={({ field }) => (
               <TextField
                 {...field}
+                {...text_options}
                 value={field.value ?? ''}
                 fullWidth
                 label={label}

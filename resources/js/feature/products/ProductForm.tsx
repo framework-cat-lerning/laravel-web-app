@@ -3,6 +3,7 @@ import { router, usePage } from '@inertiajs/react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import InputAdornment from '@mui/material/InputAdornment';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { UseFormSetError } from 'react-hook-form';
@@ -140,6 +141,10 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
           input_name="description"
           target_errors={errors.description ? { message: errors.description.message as string } : undefined}
           target_control={control}
+          text_options={{
+            multiline: true,
+            rows: 4,
+          }}
         />
 
         {/** 商品価格 */}
@@ -148,6 +153,14 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
           target_control={control}
           input_name="price"
           target_errors={errors.price ? { message: errors.price.message as string } : undefined}
+          text_options={{
+            type: 'number',
+            slotProps: {
+              input: {
+                startAdornment: <InputAdornment position="start">¥</InputAdornment>,
+              },
+            }
+          }}
         />
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>

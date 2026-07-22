@@ -155,7 +155,8 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
           target_control={control}
         />
 
-        <InputRow label="権限" children={
+        <InputRow
+          label="権限">
           <Controller
             control={control}
             name="role"
@@ -175,7 +176,7 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
               </Select>
             )}
           />
-        } />
+        </InputRow>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
