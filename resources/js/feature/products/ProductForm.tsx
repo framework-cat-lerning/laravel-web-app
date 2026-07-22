@@ -3,10 +3,8 @@ import { router, usePage } from '@inertiajs/react';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import type { UseFormSetError } from 'react-hook-form';
 import InputRow from '@/components/form/InputRow';
 import { useAuth } from '@/contexts/AuthContext';
@@ -129,77 +127,28 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
         )}
 
         {/** 商品名 */}
-        <InputRow label="商品名">
-          <Controller
-            control={control}
-            name="name"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                value={field.value ?? ''}
-                fullWidth
-                label="商品名"
-                error={Boolean(errors.name)}
-                helperText={errors.name?.message}
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow
+          label="商品名"
+          input_name="name"
+          target_errors={errors.name ? { message: errors.name.message as string } : undefined}
+          target_control={control}
+        />
 
         {/** 商品説明 */}
-        <InputRow label="商品説明">
-          <Controller
-            control={control}
-            name="description"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                value={field.value ?? ''}
-                fullWidth
-                multiline
-                minRows={4}
-                label="商品説明"
-                error={Boolean(errors.description)}
-                helperText={errors.description?.message}
-                sx={{
-                  '& .MuiInputBase-root': {
-                    alignItems: 'flex-start',
-                  },
-                }}
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow
+          label="商品説明"
+          input_name="description"
+          target_errors={errors.description ? { message: errors.description.message as string } : undefined}
+          target_control={control}
+        />
 
         {/** 商品価格 */}
-        <InputRow label="商品価格">
-          <Controller
-            control={control}
-            name="price"
-            render={({ field }) => (
-              <TextField
-                name={field.name}
-                onBlur={field.onBlur}
-                inputRef={field.ref}
-                value={field.value ?? ''}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  field.onChange(value === '' ? '' : Number(value));
-                }}
-                type="number"
-                fullWidth
-                label="商品価格"
-                slotProps={{
-                  input: {
-                    startAdornment: <InputAdornment position="start">¥</InputAdornment>,
-                  },
-                }}
-                error={Boolean(errors.price)}
-                helperText={errors.price?.message}
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow
+          label="商品価格"
+          target_control={control}
+          input_name="price"
+          target_errors={errors.price ? { message: errors.price.message as string } : undefined}
+        />
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>

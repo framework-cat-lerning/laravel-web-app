@@ -129,82 +129,34 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
           </Alert>
         )}
 
-        <InputRow label="ユーザ名">
-          <Controller
-            control={control}
-            name="name"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                value={field.value ?? ''}
-                fullWidth
-                label="ユーザ名"
-                error={Boolean(errors.name)}
-                helperText={errors.name?.message}
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow
+          label="ユーザ名"
+          input_name="name"
+          target_errors={errors.name ? { message: errors.name.message as string } : undefined}
+          target_control={control}  
+        />
 
-        <InputRow label="メールアドレス">
-          <Controller
-            control={control}
-            name="email"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                value={field.value ?? ''}
-                fullWidth
-                label="メールアドレス"
-                error={Boolean(errors.email)}
-                helperText={errors.email?.message}
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow label="メールアドレス"
+          input_name="email"
+          target_errors={errors.email ? { message: errors.email.message as string } : undefined}
+          target_control={control}
+        />
 
         {/* パスワード */}
-        <InputRow label="パスワード">
-          <Controller
-            control={control}
-            name="password"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                value={field.value ?? ''}
-                type="password"
-                fullWidth
-                label="パスワード"
-                error={Boolean(errors.password)}
-                helperText={
-                  errors.password?.message ??
-                  (form_type === 'edit' ? '変更する場合のみ入力してください' : undefined)
-                }
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow label="パスワード"
+          input_name="password"
+          target_errors={errors.password ? { message: errors.password.message as string } : undefined}
+          target_control={control}
+        />
 
         {/* パスワード確認 */}
-        <InputRow label="パスワード（確認）">
-          <Controller
-            control={control}
-            name="password_confirmation"
-            render={({ field }) => (
-              <TextField
-                {...field}
-                value={field.value ?? ''}
-                type="password"
-                fullWidth
-                label="パスワード（確認）"
-                error={Boolean(errors.password_confirmation)}
-                helperText={errors.password_confirmation?.message}
-              />
-            )}
-          />
-        </InputRow>
+        <InputRow label="パスワード（確認）"
+          input_name="password_confirmation"
+          target_errors={errors.password_confirmation ? { message: errors.password_confirmation.message as string } : undefined}
+          target_control={control}
+        />
 
-        <InputRow label="権限">
+        <InputRow label="権限" children={
           <Controller
             control={control}
             name="role"
@@ -224,7 +176,7 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
               </Select>
             )}
           />
-        </InputRow>
+        }/>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
