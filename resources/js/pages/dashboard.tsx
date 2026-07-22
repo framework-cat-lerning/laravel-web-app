@@ -1,20 +1,23 @@
 import { Head } from '@inertiajs/react';
 import Header from '@/components/ui/Header';
-import MainGrid from '@/components/ui/MainGrid';
-import type { ChartData } from '@/types/resource';
+import MainBoard from '@/feature/dashboard/MainBoard';
+import type { ChartData, ConsumptionLogDataResource } from '@/types/resource';
 
 interface DashboardProps {
   charts: {
     products?: ChartData[];
   }
+  logs: {
+    consumptions?: ConsumptionLogDataResource
+  }
 }
 
-export default function Dashboard({ charts }: DashboardProps) {
+export default function Dashboard({ charts, logs }: DashboardProps) {
   return (
     <>
       <Head title="ダッシュボード" />
       <Header title="ダッシュボード" isSearch={true} />
-      <MainGrid charts={charts} />
+      <MainBoard charts={charts} logs={logs} />
     </>
   );
 }

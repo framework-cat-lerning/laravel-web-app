@@ -58,3 +58,23 @@ export type ChartData = {
   trend: 'up' | 'down' | 'neutral';
   data: number[];
 }
+
+export type LogTableColumn = {
+  field: string;
+  headerName: string;
+  headerAlign: 'left' | 'center' | 'right';
+  align: 'left' | 'center' | 'right';
+  flex: number;
+  minWidth: number;
+}
+export type ConsumptionLogData = {
+  id: number;
+  product_name: string;
+  consumption_at: string;
+  quantity: number;
+  total_amount: number;
+}
+export type ConsumptionLogDataResource = {
+  columns: LogTableColumn[],
+  rows: ConsumptionLogData[];
+}

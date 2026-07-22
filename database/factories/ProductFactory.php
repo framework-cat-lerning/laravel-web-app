@@ -35,7 +35,7 @@ class ProductFactory extends Factory
      */
     public function withRequestUser(?User $user = null): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'request_user_id' => ! empty($user) ? $user->id : User::factory(),
         ]);
     }
@@ -45,7 +45,7 @@ class ProductFactory extends Factory
      */
     public function approved(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'status' => 2,
         ]);
     }
