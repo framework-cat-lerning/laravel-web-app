@@ -1,7 +1,11 @@
 import { Head } from '@inertiajs/react';
 import Header from '@/components/ui/Header';
 import MainBoard from '@/feature/dashboard/MainBoard';
-import type { ChartData, ConsumptionLogDataResource } from '@/types/resource';
+import type {
+  ChartData,
+  ConsumptionLogDataResource,
+  InventoryLogDataResource
+} from '@/types/resource';
 
 interface DashboardProps {
   charts: {
@@ -9,6 +13,7 @@ interface DashboardProps {
   }
   logs: {
     consumptions?: ConsumptionLogDataResource
+    inventories?: InventoryLogDataResource
   }
 }
 

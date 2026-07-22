@@ -78,3 +78,13 @@ export type ConsumptionLogDataResource = {
   columns: LogTableColumn[],
   rows: ConsumptionLogData[];
 }
+export type InventoryLogData = {
+  id: number;
+  product_name: string;
+  quantity: number;
+  updated_at: string;
+}
+export type InventoryLogDataResource = {
+  columns: LogTableColumn[],
+  rows: InventoryLogData[];
+}

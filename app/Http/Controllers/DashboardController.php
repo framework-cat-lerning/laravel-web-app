@@ -25,6 +25,7 @@ class DashboardController extends Controller
         $logResourse = [];
         if ($user->role->isAdmin()) {
             $chartResourse['consumptions'] = [];
+            $logResourse['inventories'] = $this->logTableService->getInventoryLogTableData();
 
         } elseif ($user->role->isStaff()) {
             $chartResourse['products'] = $this->chartService->getProductData();

@@ -1,13 +1,19 @@
-import { DataGrid } from '@mui/x-data-grid';
-import { ConsumptionLogDataResource } from '@/types/resource';
+import { DataGrid, type GridValidRowModel } from '@mui/x-data-grid';
+import type { LogTableColumn } from '@/types/resource';
 import Typography from '@mui/material/Typography';
 
-interface CustomizedDataGridProps {
+interface CustomizedDataGridProps<R extends GridValidRowModel> {
   title: string;
-  logs: ConsumptionLogDataResource;
+  logs: {
+    columns: LogTableColumn[];
+    rows: R[];
+  };
 }
 
-export default function CustomizedDataGrid({ title, logs }: CustomizedDataGridProps) {
+export default function CustomizedDataGrid<R extends GridValidRowModel>({
+  title,
+  logs,
+}: CustomizedDataGridProps<R>) {
   return (
     <>
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
