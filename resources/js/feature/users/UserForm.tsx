@@ -15,6 +15,7 @@ import { userCreateFormScheme, userEditFormScheme } from '@/schemes/user';
 import type { UserFormOutput } from '@/schemes/user';
 import type { UserFormInput } from '@/schemes/user';
 import type { UserRole } from '@/types/cases';
+import InputRow from '@/components/form/InputRow';
 
 interface UserFormProps {
   form_type: 'new' | 'edit';
@@ -129,132 +130,102 @@ export default function UserForm({ form_type, user, options }: UserFormProps) {
           </Alert>
         )}
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            ユーザ名
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="ユーザ名"
-                  error={Boolean(errors.name)}
-                  helperText={errors.name?.message}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="ユーザ名">
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                label="ユーザ名"
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
+              />
+            )}
+          />
+        </InputRow>
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            メールアドレス
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="メールアドレス"
-                  error={Boolean(errors.email)}
-                  helperText={errors.email?.message}
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      alignItems: 'flex-start',
-                    },
-                  }}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="メールアドレス">
+          <Controller
+            control={control}
+            name="email"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                label="メールアドレス"
+                error={Boolean(errors.email)}
+                helperText={errors.email?.message}
+              />
+            )}
+          />
+        </InputRow>
 
         {/* パスワード */}
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            パスワード
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="password"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  type="password"
-                  fullWidth
-                  label="パスワード"
-                  error={Boolean(errors.password)}
-                  helperText={
-                    errors.password?.message ??
-                    (form_type === 'edit' ? '変更する場合のみ入力してください' : undefined)
-                  }
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="パスワード">
+          <Controller
+            control={control}
+            name="password"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value ?? ''}
+                type="password"
+                fullWidth
+                label="パスワード"
+                error={Boolean(errors.password)}
+                helperText={
+                  errors.password?.message ??
+                  (form_type === 'edit' ? '変更する場合のみ入力してください' : undefined)
+                }
+              />
+            )}
+          />
+        </InputRow>
 
         {/* パスワード確認 */}
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            パスワード（確認）
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="password_confirmation"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  type="password"
-                  fullWidth
-                  label="パスワード（確認）"
-                  error={Boolean(errors.password_confirmation)}
-                  helperText={errors.password_confirmation?.message}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="パスワード（確認）">
+          <Controller
+            control={control}
+            name="password_confirmation"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value ?? ''}
+                type="password"
+                fullWidth
+                label="パスワード（確認）"
+                error={Boolean(errors.password_confirmation)}
+                helperText={errors.password_confirmation?.message}
+              />
+            )}
+          />
+        </InputRow>
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 2 }}>
-            権限
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="role"
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="権限"
-                  error={Boolean(errors.role)}
-                >
-                  {options.roles.map((role) => (
-                    <MenuItem key={role.id} value={role.id}>
-                      {role.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              )}
-            />
-          </Box>
-        </Box>
+        <InputRow label="権限">
+          <Controller
+            control={control}
+            name="role"
+            render={({ field }) => (
+              <Select
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                label="権限"
+                error={Boolean(errors.role)}
+              >
+                {options.roles.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    {role.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </InputRow>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>

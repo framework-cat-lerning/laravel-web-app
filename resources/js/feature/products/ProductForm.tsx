@@ -7,13 +7,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { Controller, useForm  } from 'react-hook-form';
-import type {UseFormSetError} from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import type { UseFormSetError } from 'react-hook-form';
 import { useAuth } from '@/contexts/AuthContext';
 import { update as adminProductUpdate } from '@/routes/admin/products';
 import { index as productList, store as productStore } from '@/routes/staff/products';
 import { productFormScheme } from '@/schemes/product';
-import type {ProductFormInput, ProductFormOutput} from '@/schemes/product';
+import type { ProductFormInput, ProductFormOutput } from '@/schemes/product';
+import InputRow from '@/components/form/InputRow';
 
 interface ProductFormProps {
   form_type: 'new' | 'edit';
@@ -128,90 +129,78 @@ export default function ProductForm({ form_type, product }: ProductFormProps) {
           </Alert>
         )}
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-            商品名
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="name"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  label="商品名"
-                  error={Boolean(errors.name)}
-                  helperText={errors.name?.message}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        {/** 商品名 */}
+        <InputRow label="商品名">
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                label="商品名"
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
+              />
+            )}
+          />
+        </InputRow>
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-            商品説明
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="description"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  value={field.value ?? ''}
-                  fullWidth
-                  multiline
-                  minRows={4}
-                  label="商品説明"
-                  error={Boolean(errors.description)}
-                  helperText={errors.description?.message}
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      alignItems: 'flex-start',
-                    },
-                  }}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        {/** 商品説明 */}
+        <InputRow label="商品説明">
+          <Controller
+            control={control}
+            name="description"
+            render={({ field }) => (
+              <TextField
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                multiline
+                minRows={4}
+                label="商品説明"
+                error={Boolean(errors.description)}
+                helperText={errors.description?.message}
+                sx={{
+                  '& .MuiInputBase-root': {
+                    alignItems: 'flex-start',
+                  },
+                }}
+              />
+            )}
+          />
+        </InputRow>
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
-          <Text sx={{ fontSize: 16, fontWeight: 'bold', flex: 1 }}>
-            商品価格
-          </Text>
-          <Box sx={{ flex: 10 }}>
-            <Controller
-              control={control}
-              name="price"
-              render={({ field }) => (
-                <TextField
-                  name={field.name}
-                  onBlur={field.onBlur}
-                  inputRef={field.ref}
-                  value={field.value ?? ''}
-                  onChange={(event) => {
-                    const value = event.target.value;
-                    field.onChange(value === '' ? '' : Number(value));
-                  }}
-                  type="number"
-                  fullWidth
-                  label="商品価格"
-                  slotProps={{
-                    input: {
-                      startAdornment: <InputAdornment position="start">¥</InputAdornment>,
-                    },
-                  }}
-                  error={Boolean(errors.price)}
-                  helperText={errors.price?.message}
-                />
-              )}
-            />
-          </Box>
-        </Box>
+        {/** 商品価格 */}
+        <InputRow label="商品価格">
+          <Controller
+            control={control}
+            name="price"
+            render={({ field }) => (
+              <TextField
+                name={field.name}
+                onBlur={field.onBlur}
+                inputRef={field.ref}
+                value={field.value ?? ''}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  field.onChange(value === '' ? '' : Number(value));
+                }}
+                type="number"
+                fullWidth
+                label="商品価格"
+                slotProps={{
+                  input: {
+                    startAdornment: <InputAdornment position="start">¥</InputAdornment>,
+                  },
+                }}
+                error={Boolean(errors.price)}
+                helperText={errors.price?.message}
+              />
+            )}
+          />
+        </InputRow>
 
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2, marginTop: 2 }}>
           <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
