@@ -5,16 +5,15 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
-import Text from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import type { UseFormSetError } from 'react-hook-form';
+import InputRow from '@/components/form/InputRow';
 import { useAuth } from '@/contexts/AuthContext';
 import { update as adminProductUpdate } from '@/routes/admin/products';
 import { index as productList, store as productStore } from '@/routes/staff/products';
 import { productFormScheme } from '@/schemes/product';
 import type { ProductFormInput, ProductFormOutput } from '@/schemes/product';
-import InputRow from '@/components/form/InputRow';
 
 interface ProductFormProps {
   form_type: 'new' | 'edit';
